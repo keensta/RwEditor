@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import me.keensta.AppWindow;
+import me.keensta.util.Notification;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -21,10 +22,12 @@ public class ClearCorpses {
 
     private File xmlFile;
     private SAXBuilder builder;
+    private AppWindow app;
 
-    public ClearCorpses(File xmlFile, SAXBuilder builder) {
+    public ClearCorpses(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = app;
     }
 
     public void activateCode() {
@@ -35,14 +38,12 @@ public class ClearCorpses {
             Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Def"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
-            int i3 = 0;
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("Corpse")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
                         markedToBeRemoved.add(e.getParentElement());
-                        i3 += 1;
                     }
                 }
             }
@@ -51,11 +52,10 @@ public class ClearCorpses {
                 markedToBeRemoved.get(i).getParentElement().removeContent(markedToBeRemoved.get(i));
             }
 
-            ClearBlood cb = new ClearBlood(xmlFile, builder);
+            ClearBlood cb = app.getClearBlood();
             cb.activateCode();
 
-            JOptionPane.showMessageDialog(null, "<html>Map cleaned of blood" + "<br> Corpses Cleared: " + i3
-                    + "</html>", "Message", JOptionPane.INFORMATION_MESSAGE);
+            Notification.createInfoNotification("Blood removed & Corpse(s) removed", 3000);
 
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fw = new FileWriter(xmlFile);

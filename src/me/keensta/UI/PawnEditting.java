@@ -43,7 +43,7 @@ public class PawnEditting {
         
         TooltipManager.addTooltip(RRButton, "Clears map of all raiders", TooltipWay.trailing);
         TooltipManager.addTooltip(CRButton, "Converts all raiders to colonists. This is unstable use at own risk", TooltipWay.left);
-        TooltipManager.addTooltip(CEButton, "Currently disabled!", TooltipWay.trailing);
+        TooltipManager.addTooltip(CEButton, "Not completed, minimal features implemented", TooltipWay.trailing);
         
         createBorder();
         app.add(pawnEdit);

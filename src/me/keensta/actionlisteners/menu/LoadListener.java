@@ -23,7 +23,8 @@ public class LoadListener implements ActionListener {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Rimworld", "rim");
         String systemName = System.getProperty("os.name");
-
+        
+        chooser.setDialogTitle("Choose RimWorld Save");
         chooser.setFileFilter(filter);
         chooser.setCurrentDirectory(new File(getCurrentDirectory(systemName)));
 
@@ -37,9 +38,9 @@ public class LoadListener implements ActionListener {
 
     private String getCurrentDirectory(String sn) {
         if(sn.contains("Windows"))
-            return "C:\\Users\\" + System.getProperty("user.name") + "\\AppData\\LocalLow\\Ludeon Studios\\RimWorld\\";
+            return "C:\\Users\\" + System.getProperty("user.name") + "\\AppData\\LocalLow\\Ludeon Studios\\RimWorld\\Saves\\";
         else if(sn.contains("OS X"))
-            return "//Users//" + System.getProperty("user.name") + "//Library//Caches//unity.Ludeon Studios.RimWorld//";
+            return "//Users//" + System.getProperty("user.name") + "//Library//Caches//unity.Ludeon Studios.RimWorld//Saves//";
         return "";
     }
 

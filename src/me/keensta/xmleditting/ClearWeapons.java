@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import me.keensta.util.Notification;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -64,8 +64,8 @@ public class ClearWeapons {
                 markedToBeRemoved.get(i).getParentElement().removeContent(markedToBeRemoved.get(i));
             }
 
-            JOptionPane.showMessageDialog(null, "Weapons Removed", "InfoBox", JOptionPane.INFORMATION_MESSAGE);
-
+            Notification.createInfoNotification("Weapon(s) Cleaned up", 3000);
+            
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fw = new FileWriter(xmlFile);
 

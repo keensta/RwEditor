@@ -21,7 +21,7 @@ public class ColonistWindow extends JPanel {
     private ColonistView cv;
 
     public ColonistWindow(AppWindow app) {
-        setPreferredSize(new Dimension(550, 300));
+        setPreferredSize(new Dimension(560, 400));
         setLayout(null);
 
         this.app = app;

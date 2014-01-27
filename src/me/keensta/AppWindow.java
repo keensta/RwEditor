@@ -120,8 +120,7 @@ public class AppWindow extends JPanel {
     }
 
     public void makeVisible(int i) {
-        menu.save.setEnabled(true);/*
-        long startT = System.currentTimeMillis();*/
+        menu.save.setEnabled(true);
         
         if(i == 0) {
             gameInfo = new GameInfo(this);
@@ -132,10 +131,7 @@ public class AppWindow extends JPanel {
             gameInfo.BuildComponents();
             res.BuildComponents();
             world.BuildComponents();
-            pawnEdit.BuildComponents();/*
-            long endT = System.currentTimeMillis();
-            System.out.println("Time to load in miliseconds " + (endT - startT));
-            System.out.println("Time to load in seconds " + ((endT - startT) / 1000));*/
+            pawnEdit.BuildComponents();
         } else {
             res.updateComponents();
         }
@@ -154,7 +150,7 @@ public class AppWindow extends JPanel {
 
     private void intilizeClasses() {
         cb = new ClearBlood(xmlFile, builder);
-        cc = new ClearCorpses(xmlFile, builder);
+        cc = new ClearCorpses(xmlFile, builder, this);
         cw = new ClearWeapons(xmlFile, builder);
         cr = new ConvertRaiders(xmlFile, builder);
         draid = new DeleteRaiders(xmlFile, builder);

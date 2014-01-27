@@ -45,6 +45,9 @@ public class World {
         TooltipManager.addTooltip(CWButton, "Gets rid of all weapons not in a wepaon rack", TooltipWay.trailing);
         TooltipManager.addTooltip(CRButton, "Removes all rubbish from the map, include slag and rock debris.", TooltipWay.trailing);
         
+        //Temp (Looking for Fix due to game update)
+        CWButton.setEnabled(false);
+        
         createBorder();
         app.add(world);
         app.add(CCButton);

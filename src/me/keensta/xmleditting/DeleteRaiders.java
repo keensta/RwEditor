@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import me.keensta.util.Notification;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -51,7 +51,7 @@ public class DeleteRaiders {
                 markedToBeRemoved.get(i).getParentElement().removeContent(markedToBeRemoved.get(i));
             }
 
-            JOptionPane.showMessageDialog(null, "Raiders Removed: " + i3, "InfoBox", JOptionPane.INFORMATION_MESSAGE);
+            Notification.createInfoNotification("Raider(s) Removed: " + i3, 3000);
 
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fw = new FileWriter(xmlFile);

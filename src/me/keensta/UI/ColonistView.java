@@ -1,7 +1,8 @@
-package me.keensta.UI;
+ package me.keensta.UI;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,7 +13,11 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.filter.ElementFilter;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 import com.alee.extended.painter.DashedBorderPainter;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
@@ -20,9 +25,11 @@ import com.alee.laf.text.WebTextField;
 
 import me.keensta.AppWindow;
 import me.keensta.actionlisteners.pawn.ListListener;
+import me.keensta.actionlisteners.pawn.SavePawnListener;
 import me.keensta.colonists.ColonistWindow;
 import me.keensta.colonists.Pawn;
 import me.keensta.colonists.enums.Weapon;
+import me.keensta.util.Notification;
 
 public class ColonistView {
 
@@ -47,6 +54,14 @@ public class ColonistView {
     private WebTextField fieldAge = new WebTextField();
     private WebLabel labelSex = new WebLabel("Sex");
     private WebTextField fieldSex = new WebTextField();
+    private WebLabel labelHealth = new WebLabel("Health");
+    private WebTextField fieldHealth = new WebTextField();
+    private WebLabel labelHappiness = new WebLabel("Happiness");
+    private WebTextField fieldHappiness = new WebTextField();
+    private WebLabel labelLoyalty = new WebLabel("Loyalty");
+    private WebTextField fieldLoyalty = new WebTextField();
+    private WebLabel labelFear = new WebLabel("Fear");
+    private WebTextField fieldFear = new WebTextField();
     private WebLabel labelWeapon = new WebLabel("Weapon");
     private WebComboBox fieldWeapon;
     
@@ -54,14 +69,17 @@ public class ColonistView {
     
     //Skill END
     //ColonistInfo Components END
+    private WebButton savePawn = new WebButton("Save");
     
     private ListListener ll;
+    private SavePawnListener spl;
 
     public ColonistView(AppWindow app, ColonistWindow cw) {
         this.app = app;
         this.cw = cw;
         
         ll = new ListListener(cw, app);
+        spl = new SavePawnListener(cw);
     }
 
     public void createWindow() {
@@ -77,8 +95,8 @@ public class ColonistView {
         colonistInfo.setDrawShade(true);
         colonistInfo.setShadeColor(new Color(20, 210, 230));
         
-        //Temp
-        fieldSex.setEditable(false);
+        fieldId.setEditable(false);
+        fieldName.setEditable(false);
         
         // Add to main window
         createBorder();
@@ -94,26 +112,45 @@ public class ColonistView {
         cw.add(fieldAge);
         cw.add(labelSex);
         cw.add(fieldSex);
+        cw.add(labelHealth);
+        cw.add(fieldHealth);
+        cw.add(labelHappiness);
+        cw.add(fieldHappiness);
+        cw.add(labelLoyalty);
+        cw.add(fieldLoyalty);
+        cw.add(labelFear);
+        cw.add(fieldFear);
         cw.add(labelWeapon);
         cw.add(fieldWeapon);
+        cw.add(savePawn);
         
         // Positioning
         colonistEditor.setBounds(5, 0, 105, 25);
-        list.setBounds(5, 35, 150, 260);
+        list.setBounds(5, 35, 150, 365);
         colonistInfo.setBounds(165, 0, 105, 25);
         
-        labelName.setBounds(165, 25, 45, 25);
-        fieldName.setBounds(215, 25, 130, 25);
+        labelName.setBounds(170, 25, 45, 25);
+        fieldName.setBounds(225, 25, 130, 25);
         labelId.setBounds(360, 25, 45, 25);
-        fieldId.setBounds(410, 25, 130, 25);
-        labelAge.setBounds(165, 60, 45, 25);
-        fieldAge.setBounds(215, 60, 130, 25);
+        fieldId.setBounds(420, 25, 130, 25);
+        labelAge.setBounds(170, 60, 45, 25);
+        fieldAge.setBounds(225, 60, 130, 25);
         labelSex.setBounds(360, 60, 45, 25);
-        fieldSex.setBounds(410, 60, 130, 25);
-        labelWeapon.setBounds(165, 95, 50, 25);
-        fieldWeapon.setBounds(215, 95, 325, 25);
+        fieldSex.setBounds(420, 60, 130, 25);
+        labelHealth.setBounds(170, 95, 45, 25);
+        fieldHealth.setBounds(225, 95, 130, 25);
+        labelHappiness.setBounds(360, 95, 55, 25);
+        fieldHappiness.setBounds(420, 95, 130, 25);
+        labelLoyalty.setBounds(170, 125, 55, 25);
+        fieldLoyalty.setBounds(225, 125, 130, 25);
+        labelFear.setBounds(360, 125, 45, 25);
+        fieldFear.setBounds(420, 125, 130, 25);
+        labelWeapon.setBounds(170, 160, 50, 25);
+        fieldWeapon.setBounds(225, 160, 325, 25);
+        savePawn.setBounds(470, 365, 80, 25);
         
         list.addListSelectionListener(ll);
+        savePawn.addActionListener(spl);
     }
     
     @SuppressWarnings("rawtypes")
@@ -126,7 +163,7 @@ public class ColonistView {
 
         cw.add(borderLabel);
 
-        borderLabel.setBounds(0, 0, 550, 300);
+        borderLabel.setBounds(0, 0, 560, 400);
     }
     
     @SuppressWarnings("rawtypes")
@@ -139,11 +176,11 @@ public class ColonistView {
 
         cw.add(colonistBorder);
 
-        colonistBorder.setBounds(155, 20, 390, 105);
+        colonistBorder.setBounds(160, 20, 395, 170);
     }
     
     private void setUpWeapons() {
-        String[] weaponNames = new String[10];
+        String[] weaponNames = new String[11];
         for(int i = 0; i < Weapon.values().length; i++) {
             weaponNames[i] = Weapon.values()[i].getName();
         }
@@ -155,10 +192,13 @@ public class ColonistView {
         fieldId.setText(p.getId());
         fieldAge.setText(p.getAge());
         fieldSex.setText(p.getSex());
-        //System.out.println(p.getCurrentWeapon().getName());
+        fieldHealth.setText(p.getHealth());
+        fieldHappiness.setText(Double.toString(p.getHappiness()));
+        fieldLoyalty.setText(Double.toString(p.getLoyalty()));
+        fieldFear.setText(Double.toString(p.getFear()));
         fieldWeapon.setSelectedItem(p.getCurrentWeapon().getName());
     }
-
+    
     private List<Pawn> loadPawns() {
         File xmlFile = app.getFile();
         SAXBuilder builder = app.getBuilder();
@@ -188,6 +228,59 @@ public class ColonistView {
         }
         
         return pawns;
+    }
+    
+    public void savePawn(Pawn p) {
+        File xmlFile = app.getFile();
+        SAXBuilder builder = app.getBuilder();
+        try {
+            Document doc = builder.build(xmlFile);
+            Element rootNode = doc.getRootElement();
+
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
+
+            while(c.hasNext()) {
+                Element e = c.next();
+
+                if(e.getValue().equalsIgnoreCase("Colonist")) {
+                    Element ep = e.getParentElement();
+                    if(ep.getName().equalsIgnoreCase("Thing")) {
+                        if(ep.getAttributeValue("Class").equalsIgnoreCase("Pawn")) {
+                            if(ep.getChild("story").getChildText("name.nick").equalsIgnoreCase(p.getName())) {
+                                //Update File
+                                ep.getChild("Age").setText(fieldAge.getText());
+                                ep.getChild("healthTracker").getChild("PawnHealth").setText(fieldHealth.getText());
+                                ep.getChild("psychology").getChild("LoyaltyBase").getChild("CurLevel").setText(fieldLoyalty.getText());
+                                ep.getChild("psychology").getChild("PieceHappiness").getChild("CurLevel").setText(fieldHappiness.getText());
+                                ep.getChild("psychology").getChild("PieceFear").getChild("CurLevel").setText(fieldFear.getText());
+                                
+                                //Update Pawn
+                                p.setAge(fieldAge.getText());
+                                p.setHealth(fieldHealth.getText());
+                                p.setHappiness(Double.parseDouble(fieldHappiness.getText()));
+                                p.setLoyalty(Double.parseDouble(fieldLoyalty.getText()));
+                                p.setFear(Double.parseDouble(fieldFear.getText()));
+                            }
+                        }
+                    }
+                }
+            }
+            
+            Notification.createInfoNotification("Colonist " + p.getName() + " changes have been saved", 4000);
+            
+            XMLOutputter xmlOutput = new XMLOutputter();
+            FileWriter fw = new FileWriter(xmlFile);
+
+            xmlOutput.setFormat(Format.getPrettyFormat());
+            xmlOutput.output(doc, fw);
+
+            fw.close();
+            
+        } catch(IOException io) {
+            io.printStackTrace();
+        } catch(JDOMException e) {
+            e.printStackTrace();
+        }
     }
 
     private WebList getPawns() {

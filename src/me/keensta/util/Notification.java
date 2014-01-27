@@ -26,10 +26,9 @@ public class Notification {
     }
 
     public static void createWarningNotification(String message, int time) {
-        WebNotificationPopup notificationPopup = new WebNotificationPopup(PopupStyle.bordered);
+        WebNotificationPopup notificationPopup = new WebNotificationPopup(PopupStyle.light);
         notificationPopup.setIcon(NotificationIcon.warning);
         notificationPopup.setDisplayTime(time);
-
         notificationPopup.setContent(message);
         NotificationManager.showNotification(notificationPopup);
     }

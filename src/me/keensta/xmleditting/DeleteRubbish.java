@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import me.keensta.util.Notification;
 
 import org.apache.commons.codec.binary.Base64;
 import org.jdom2.Document;
@@ -42,7 +42,7 @@ public class DeleteRubbish {
             byte[] byteArray = Base64.decodeBase64(string.getBytes());
 
             for(int i = 0; i < byteArray.length; i++) {
-                if(byteArray[i] == 55 || byteArray[i] == 56) {
+                if(byteArray[i] == 56 || byteArray[i] == 57) {
                     byteArray[i] = 0;
                 }
             }
@@ -59,7 +59,8 @@ public class DeleteRubbish {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("SandbagRubble") || e.getValue().equalsIgnoreCase("FilthSand")
-                        || e.getValue().equalsIgnoreCase("FilthDirt")) {
+                        || e.getValue().equalsIgnoreCase("FilthDirt") || e.getValue().equalsIgnoreCase("SlagRubble")
+                        || e.getValue().equalsIgnoreCase("RockRubble")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
                         markedToBeRemoved.add(e.getParentElement());
                     }
@@ -70,7 +71,7 @@ public class DeleteRubbish {
                 markedToBeRemoved.get(i).getParentElement().removeContent(markedToBeRemoved.get(i));
             }
 
-            JOptionPane.showMessageDialog(null, "All Rubbish Removed", "InfoBox", JOptionPane.INFORMATION_MESSAGE);
+            Notification.createInfoNotification("All rubbish has been removed", 3000);
 
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fw = new FileWriter(xmlFile);

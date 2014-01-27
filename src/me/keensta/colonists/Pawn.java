@@ -33,44 +33,43 @@ public class Pawn {
     public Pawn(Element pawnE) {
         setupClass(pawnE);
     }
-    
+
     public Pawn(String pawnName) {
         this.name = pawnName;
         this.id = pawnName;
-        
+
         this.age = "20";
         this.health = "100";
         this.sex = "male";
         this.currentWeapon = Weapon.LEEENFIELD;
-        
+
         this.loyalty = 100;
         this.happiness = 100;
         this.fear = 100;
     }
 
     private void setupClass(Element e) {
-        setName(e.getChildText("CharacterName"));
+        setName(e.getChild("story").getChildText("name.nick"));
         setId(e.getChildText("ID"));
 
         setAge(e.getChildText("Age"));
-        setHealth(e.getChild("HealthTracker").getChildText("PawnHealth"));
+        setHealth(e.getChild("healthTracker").getChildText("PawnHealth"));
         setSex(determinSex(e));
         setCurrentWeapon(hasWeapon(e));
 
-        setLoyalty(Double.parseDouble(e.getChild("Psychology").getChild("LoyaltyBase").getChildText("CurLevel")));
-        setHappiness(Double.parseDouble(e.getChild("Psychology").getChild("PieceHappiness").getChildText("CurLevel")));
-        setFear(Double.parseDouble(e.getChild("Psychology").getChild("PieceFear").getChildText("CurLevel")));
+        setLoyalty(Double.parseDouble(e.getChild("psychology").getChild("LoyaltyBase").getChildText("CurLevel")));
+        setHappiness(Double.parseDouble(e.getChild("psychology").getChild("PieceHappiness").getChildText("CurLevel")));
+        setFear(Double.parseDouble(e.getChild("psychology").getChild("PieceFear").getChildText("CurLevel")));
     }
 
     private String determinSex(Element e) {
-        if(e.getChild("Sex") == null) {
+        if(e.getChild("Sex") == null)
             return "Male";
-        }
         return "Female";
     }
 
     private Weapon hasWeapon(Element e) {
-        Element p = e.getChild("Equipment").getChild("Primary");
+        Element p = e.getChild("equipment").getChild("Primary");
 
         if(p.hasAttributes()) {
             if(p.getAttributeValue("IsNull").equalsIgnoreCase("True")) {
@@ -78,9 +77,8 @@ public class Pawn {
             } else {
                 return getWeapon(p.getChildText("Def"));
             }
-        } else {
+        } else
             return getWeapon(p.getChildText("Def"));
-        }
     }
 
     private Weapon getWeapon(String weaponCode) {
@@ -88,7 +86,7 @@ public class Pawn {
             if(weaponCode.equalsIgnoreCase(w.getWeaponCode()))
                 return w;
         }
-        
+
         return Weapon.NONE;
     }
 
