@@ -94,7 +94,7 @@ public class AppWindow extends JPanel {
         menuVar = menu.createMenu(menuVar);
 
         // Adjust size and set layout and make border
-        setPreferredSize(new Dimension(580, 350));
+        setPreferredSize(new Dimension(580, 310));
         setLayout(null);
         setBorder();
         
@@ -116,7 +116,7 @@ public class AppWindow extends JPanel {
 
         add(borderLabel);
 
-        borderLabel.setBounds(0, 26, 580, 324);
+        borderLabel.setBounds(0, 26, 580, 284);
     }
 
     public void makeVisible(int i) {

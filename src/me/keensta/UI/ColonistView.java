@@ -2,7 +2,6 @@
 
 import java.awt.Color;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -13,9 +12,6 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.filter.ElementFilter;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
-
 import com.alee.extended.painter.DashedBorderPainter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
@@ -29,7 +25,6 @@ import me.keensta.actionlisteners.pawn.SavePawnListener;
 import me.keensta.colonists.ColonistWindow;
 import me.keensta.colonists.Pawn;
 import me.keensta.colonists.enums.Weapon;
-import me.keensta.util.Notification;
 
 public class ColonistView {
 
@@ -97,6 +92,7 @@ public class ColonistView {
         
         fieldId.setEditable(false);
         fieldName.setEditable(false);
+        fieldWeapon.setEditable(false);
         
         // Add to main window
         createBorder();
@@ -216,7 +212,7 @@ public class ColonistView {
                 if(e.getValue().equalsIgnoreCase("Colonist")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
                         if(e.getParentElement().getAttributeValue("Class").equalsIgnoreCase("Pawn"))
-                        pawns.add(new Pawn(e.getParentElement()));
+                        pawns.add(new Pawn(e.getParentElement(), this, app));
                     }
                 }
             }
@@ -228,59 +224,6 @@ public class ColonistView {
         }
         
         return pawns;
-    }
-    
-    public void savePawn(Pawn p) {
-        File xmlFile = app.getFile();
-        SAXBuilder builder = app.getBuilder();
-        try {
-            Document doc = builder.build(xmlFile);
-            Element rootNode = doc.getRootElement();
-
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
-
-            while(c.hasNext()) {
-                Element e = c.next();
-
-                if(e.getValue().equalsIgnoreCase("Colonist")) {
-                    Element ep = e.getParentElement();
-                    if(ep.getName().equalsIgnoreCase("Thing")) {
-                        if(ep.getAttributeValue("Class").equalsIgnoreCase("Pawn")) {
-                            if(ep.getChild("story").getChildText("name.nick").equalsIgnoreCase(p.getName())) {
-                                //Update File
-                                ep.getChild("Age").setText(fieldAge.getText());
-                                ep.getChild("healthTracker").getChild("PawnHealth").setText(fieldHealth.getText());
-                                ep.getChild("psychology").getChild("LoyaltyBase").getChild("CurLevel").setText(fieldLoyalty.getText());
-                                ep.getChild("psychology").getChild("PieceHappiness").getChild("CurLevel").setText(fieldHappiness.getText());
-                                ep.getChild("psychology").getChild("PieceFear").getChild("CurLevel").setText(fieldFear.getText());
-                                
-                                //Update Pawn
-                                p.setAge(fieldAge.getText());
-                                p.setHealth(fieldHealth.getText());
-                                p.setHappiness(Double.parseDouble(fieldHappiness.getText()));
-                                p.setLoyalty(Double.parseDouble(fieldLoyalty.getText()));
-                                p.setFear(Double.parseDouble(fieldFear.getText()));
-                            }
-                        }
-                    }
-                }
-            }
-            
-            Notification.createInfoNotification("Colonist " + p.getName() + " changes have been saved", 4000);
-            
-            XMLOutputter xmlOutput = new XMLOutputter();
-            FileWriter fw = new FileWriter(xmlFile);
-
-            xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(doc, fw);
-
-            fw.close();
-            
-        } catch(IOException io) {
-            io.printStackTrace();
-        } catch(JDOMException e) {
-            e.printStackTrace();
-        }
     }
 
     private WebList getPawns() {
@@ -298,6 +241,30 @@ public class ColonistView {
     
     public List<Pawn> getPawnList() {
         return listPawns;
+    }
+    
+    public String getAge() {
+        return fieldAge.getText();
+    }
+    
+    public String getHealth() {
+        return fieldHealth.getText();
+    }
+    
+    public String getLoyalty() {
+        return fieldLoyalty.getText();
+    }
+    
+    public String getHappiness() {
+        return fieldHappiness.getText();
+    }
+    
+    public String getFear() {
+        return fieldFear.getText();
+    }
+    
+    public String getWeapon() {
+        return (String) fieldWeapon.getSelectedItem();
     }
 
 }

@@ -51,10 +51,10 @@ public class PawnEditting {
         app.add(CRButton);
         app.add(CEButton);
         
-        pawnEdit.setBounds(260, 255, 80, 25);
-        RRButton.setBounds(260, 280, 100, 25);
-        CRButton.setBounds(360, 280, 100, 25);
-        CEButton.setBounds(260, 305, 140, 25);
+        pawnEdit.setBounds(260, 225, 80, 25);
+        RRButton.setBounds(260, 250, 100, 25);
+        CRButton.setBounds(360, 250, 100, 25);
+        CEButton.setBounds(260, 275, 140, 25);
         
         RRButton.addActionListener(rrl);
         CRButton.addActionListener(crl);
@@ -71,6 +71,6 @@ public class PawnEditting {
 
         app.add(borderLabel);
 
-        borderLabel.setBounds(255, 275, 210, 60);
+        borderLabel.setBounds(255, 245, 210, 60);
     }
 }

@@ -1,17 +1,34 @@
 package me.keensta.colonists;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import me.keensta.AppWindow;
+import me.keensta.UI.ColonistView;
 import me.keensta.colonists.enums.Skill;
 import me.keensta.colonists.enums.Trait;
 import me.keensta.colonists.enums.Weapon;
+import me.keensta.util.Notification;
 
+import org.jdom2.Attribute;
+import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.JDOMException;
+import org.jdom2.filter.ElementFilter;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 
 @SuppressWarnings("unused")
 public class Pawn {
 
+    private ColonistView cv;
+    private AppWindow app;
+    
     // Store basic vars as strings.
     // Psychology store as double
 
@@ -30,8 +47,10 @@ public class Pawn {
     private List<Trait> traits = new ArrayList<Trait>();
     private List<Skill> skills = new ArrayList<Skill>();
 
-    public Pawn(Element pawnE) {
+    public Pawn(Element pawnE, ColonistView cv, AppWindow app) {
         setupClass(pawnE);
+        this.cv = cv;
+        this.app = app;
     }
 
     public Pawn(String pawnName) {
@@ -162,6 +181,85 @@ public class Pawn {
 
     public void setFear(double fear) {
         this.fear = fear;
+    }
+    
+    public void savePawn(Pawn p) {
+        File xmlFile = app.getFile();
+        SAXBuilder builder = app.getBuilder();
+        try {
+            Document doc = builder.build(xmlFile);
+            Element rootNode = doc.getRootElement();
+
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
+
+            while(c.hasNext()) {
+                Element e = c.next();
+
+                if(e.getValue().equalsIgnoreCase("Colonist")) {
+                    Element ep = e.getParentElement();
+                    if(ep.getName().equalsIgnoreCase("Thing")) {
+                        if(ep.getAttributeValue("Class").equalsIgnoreCase("Pawn")) {
+                            if(ep.getChild("story").getChildText("name.nick").equalsIgnoreCase(p.getName())) {
+                                //Update File
+                                ep.getChild("Age").setText(cv.getAge());
+                                ep.getChild("healthTracker").getChild("PawnHealth").setText(cv.getHealth());
+                                ep.getChild("psychology").getChild("LoyaltyBase").getChild("CurLevel").setText(cv.getLoyalty());
+                                ep.getChild("psychology").getChild("PieceHappiness").getChild("CurLevel").setText(cv.getHappiness());
+                                ep.getChild("psychology").getChild("PieceFear").getChild("CurLevel").setText(cv.getFear());
+                                //setWeapon(ep);
+                                
+                                //Update Pawn
+                                p.setAge(cv.getAge());
+                                p.setHealth(cv.getHealth());
+                                p.setHappiness(Double.parseDouble(cv.getHappiness()));
+                                p.setLoyalty(Double.parseDouble(cv.getLoyalty()));
+                                p.setFear(Double.parseDouble(cv.getFear()));
+                            }
+                        }
+                    }
+                }
+            }
+            
+            Notification.createInfoNotification("Colonist " + p.getName() + " changes have been saved", 4000);
+            
+            XMLOutputter xmlOutput = new XMLOutputter();
+            FileWriter fw = new FileWriter(xmlFile);
+
+            xmlOutput.setFormat(Format.getPrettyFormat());
+            xmlOutput.output(doc, fw);
+
+            fw.close();
+            
+        } catch(IOException io) {
+            io.printStackTrace();
+        } catch(JDOMException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setWeapon(Element ep) {
+        String weapon = cv.getWeapon();
+        String weaponCode = determineWeapon(weapon);
+        
+        if(weaponCode.length() == 0) {
+            Element equipment = ep.getChild("equipment");
+            equipment.removeContent(equipment.getChild("Primary"));
+            
+            Element primary = new Element("Primary");
+            
+            primary.setAttribute(new Attribute("IsNull", "True"));
+            equipment.addContent(primary);
+        } else {
+            Element equipment = ep.getChild("equipment");
+        }
+    }
+
+    private String determineWeapon(String weapon) {
+        for(Weapon w : Weapon.values()) {
+            if(w.getName().equalsIgnoreCase(weapon))
+                return w.getWeaponCode();
+        }
+        return Weapon.NONE.getWeaponCode();
     }
 
 }

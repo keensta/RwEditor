@@ -54,10 +54,10 @@ public class World {
         app.add(CWButton);
         app.add(CRButton);
         
-        world.setBounds(40, 255, 80, 25);
-        CCButton.setBounds(40, 280, 90, 25);
-        CRButton.setBounds(130, 280, 90, 25);
-        CWButton.setBounds(40, 305, 100, 25);
+        world.setBounds(40, 225, 80, 25);
+        CCButton.setBounds(40, 250, 90, 25);
+        CRButton.setBounds(130, 250, 90, 25);
+        CWButton.setBounds(40, 275, 100, 25);
         
         CCButton.addActionListener(ccl);
         CRButton.addActionListener(drl);
@@ -74,7 +74,7 @@ public class World {
 
         app.add(borderLabel);
 
-        borderLabel.setBounds(35, 275, 190, 60);
+        borderLabel.setBounds(35, 245, 190, 60);
     }
 
 }

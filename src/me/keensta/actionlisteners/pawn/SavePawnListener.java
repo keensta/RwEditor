@@ -19,7 +19,7 @@ public class SavePawnListener implements ActionListener{
         int i = cw.getColonistView().getList().getSelectedIndex();
         Pawn p = cw.getColonistView().getPawnList().get(i);
         
-        cw.getColonistView().savePawn(p);
+        p.savePawn(p);
     }
 
 }
