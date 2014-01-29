@@ -43,6 +43,8 @@ public class Pawn {
     private double loyalty;
     private double happiness;
     private double fear;
+    private double food;
+    private double rest;
     // Psychology Vars END
     private List<Trait> traits = new ArrayList<Trait>();
     private List<Skill> skills = new ArrayList<Skill>();
@@ -79,6 +81,8 @@ public class Pawn {
         setLoyalty(Double.parseDouble(e.getChild("psychology").getChild("LoyaltyBase").getChildText("CurLevel")));
         setHappiness(Double.parseDouble(e.getChild("psychology").getChild("PieceHappiness").getChildText("CurLevel")));
         setFear(Double.parseDouble(e.getChild("psychology").getChild("PieceFear").getChildText("CurLevel")));
+        setFood(Double.parseDouble(e.getChild("food").getChild("PieceFood").getChildText("CurLevel")));
+        setRest(Double.parseDouble(e.getChild("rest").getChild("PieceRest").getChildText("CurLevel")));
     }
 
     private String determinSex(Element e) {
@@ -183,6 +187,22 @@ public class Pawn {
         this.fear = fear;
     }
     
+    public double getFood() {
+        return food;
+    }
+    
+    public void setFood(double food) {
+        this.food = food;
+    }
+    
+    public double getRest() {
+        return rest;
+    }
+    
+    public void setRest(double rest) {
+        this.rest = rest;
+    }
+    
     public void savePawn(Pawn p) {
         File xmlFile = app.getFile();
         SAXBuilder builder = app.getBuilder();
@@ -206,7 +226,9 @@ public class Pawn {
                                 ep.getChild("psychology").getChild("LoyaltyBase").getChild("CurLevel").setText(cv.getLoyalty());
                                 ep.getChild("psychology").getChild("PieceHappiness").getChild("CurLevel").setText(cv.getHappiness());
                                 ep.getChild("psychology").getChild("PieceFear").getChild("CurLevel").setText(cv.getFear());
-                                //setWeapon(ep);
+                                ep.getChild("food").getChild("PieceFood").getChild("CurLevel").setText(cv.getFood());
+                                ep.getChild("rest").getChild("PieceRest").getChild("CurLevel").setText(cv.getRest());
+                                setWeapon(ep);
                                 
                                 //Update Pawn
                                 p.setAge(cv.getAge());
@@ -214,6 +236,9 @@ public class Pawn {
                                 p.setHappiness(Double.parseDouble(cv.getHappiness()));
                                 p.setLoyalty(Double.parseDouble(cv.getLoyalty()));
                                 p.setFear(Double.parseDouble(cv.getFear()));
+                                p.setFood(Double.parseDouble(cv.getFood()));
+                                p.setRest(Double.parseDouble(cv.getRest()));
+                                p.setCurrentWeapon(Weapon.valueOf(cv.getWeapon().replace("-", "").replaceAll(" ", "")));
                             }
                         }
                     }
@@ -251,6 +276,20 @@ public class Pawn {
             equipment.addContent(primary);
         } else {
             Element equipment = ep.getChild("equipment");
+            Element prim = new Element("Primary");
+            Element def = new Element("Def");
+            Element id = new Element("ID");
+            Element health = new Element("Health");
+            
+            def.setText(weaponCode);
+            id.setText(weaponCode+"0");
+            health.setText("100");
+            prim.addContent(def);
+            prim.addContent(id);
+            prim.addContent(health);
+            
+            equipment.removeContent(equipment.getChild("Primary"));
+            equipment.addContent(prim);
         }
     }
 

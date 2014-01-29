@@ -22,6 +22,7 @@ import me.keensta.xmleditting.DataHandler;
 import me.keensta.xmleditting.DeleteRaiders;
 import me.keensta.xmleditting.DeleteRubbish;
 import me.keensta.xmleditting.EditResources;
+import me.keensta.xmleditting.SpawnGeyser;
 
 import org.jdom2.input.SAXBuilder;
 
@@ -58,6 +59,7 @@ public class AppWindow extends JPanel {
     private DeleteRaiders draid;
     private DeleteRubbish dr;
     private EditResources er;
+    private SpawnGeyser sg;
     
     // Xml Stuff
     private SAXBuilder builder = new SAXBuilder();
@@ -156,6 +158,7 @@ public class AppWindow extends JPanel {
         draid = new DeleteRaiders(xmlFile, builder);
         dr = new DeleteRubbish(xmlFile, builder);
         er = new EditResources(xmlFile, builder);
+        sg = new SpawnGeyser(xmlFile, builder);
     }
 
     public JFrame getFrame() {
@@ -208,5 +211,13 @@ public class AppWindow extends JPanel {
     
     public EditResources getEditResources() {
         return er;
+    }
+
+    public SpawnGeyser getSpawnGeyser() {
+        return sg;
+    }
+
+    public void setSpawnGeyser(SpawnGeyser sg) {
+        this.sg = sg;
     }
 }

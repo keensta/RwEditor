@@ -57,6 +57,10 @@ public class ColonistView {
     private WebTextField fieldLoyalty = new WebTextField();
     private WebLabel labelFear = new WebLabel("Fear");
     private WebTextField fieldFear = new WebTextField();
+    private WebLabel labelFood = new WebLabel("Food");
+    private WebTextField fieldFood = new WebTextField();
+    private WebLabel labelRest = new WebLabel("Rest");
+    private WebTextField fieldRest = new WebTextField();
     private WebLabel labelWeapon = new WebLabel("Weapon");
     private WebComboBox fieldWeapon;
     
@@ -116,6 +120,10 @@ public class ColonistView {
         cw.add(fieldLoyalty);
         cw.add(labelFear);
         cw.add(fieldFear);
+        cw.add(labelFood);
+        cw.add(fieldFood);
+        cw.add(labelRest);
+        cw.add(fieldRest);
         cw.add(labelWeapon);
         cw.add(fieldWeapon);
         cw.add(savePawn);
@@ -141,8 +149,12 @@ public class ColonistView {
         fieldLoyalty.setBounds(225, 125, 130, 25);
         labelFear.setBounds(360, 125, 45, 25);
         fieldFear.setBounds(420, 125, 130, 25);
-        labelWeapon.setBounds(170, 160, 50, 25);
-        fieldWeapon.setBounds(225, 160, 325, 25);
+        labelFood.setBounds(170, 160, 45, 25);
+        fieldFood.setBounds(225, 160, 130, 25);
+        labelRest.setBounds(360, 160, 45, 25);
+        fieldRest.setBounds(420, 160, 130, 25);
+        labelWeapon.setBounds(170, 195, 55, 25);
+        fieldWeapon.setBounds(225, 195, 325, 25);
         savePawn.setBounds(470, 365, 80, 25);
         
         list.addListSelectionListener(ll);
@@ -172,7 +184,7 @@ public class ColonistView {
 
         cw.add(colonistBorder);
 
-        colonistBorder.setBounds(160, 20, 395, 170);
+        colonistBorder.setBounds(160, 20, 395, 205);
     }
     
     private void setUpWeapons() {
@@ -192,6 +204,8 @@ public class ColonistView {
         fieldHappiness.setText(Double.toString(p.getHappiness()));
         fieldLoyalty.setText(Double.toString(p.getLoyalty()));
         fieldFear.setText(Double.toString(p.getFear()));
+        fieldFood.setText(Double.toString(p.getFood()));
+        fieldRest.setText(Double.toString(p.getRest()));
         fieldWeapon.setSelectedItem(p.getCurrentWeapon().getName());
     }
     
@@ -261,6 +275,14 @@ public class ColonistView {
     
     public String getFear() {
         return fieldFear.getText();
+    }
+    
+    public String getFood() {
+        return fieldFood.getText();
+    }
+    
+    public String getRest() {
+        return fieldRest.getText();
     }
     
     public String getWeapon() {
