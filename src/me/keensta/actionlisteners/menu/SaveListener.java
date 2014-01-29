@@ -23,7 +23,7 @@ public class SaveListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        try {
+        /*try {
             Document doc = app.getBuilder().build(app.getFile());
 
             FileWriter fw = new FileWriter(app.getFile());
@@ -37,7 +37,7 @@ public class SaveListener implements ActionListener {
         } catch(IOException | JDOMException e1) {
             e1.printStackTrace();
         }
-
+*/
         Notification.createInfoNotification("File Saved...", 5000);
     }
 }

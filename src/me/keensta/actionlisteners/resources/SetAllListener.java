@@ -20,21 +20,22 @@ public class SetAllListener implements ActionListener{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        WebComboBox cb = app.getRes().getResourceList();
-        int index = cb.getItemCount() - 2;
+    public void actionPerformed(ActionEvent e) {       
         int stackCount = app.getRes().getSetAllStackCount();
         String[] data = app.getRes().getData();
         
-        if(index == 0 || app.getRes().getSetAllStackCount() == 0 || data.length == 1) {
+        if(data == null || app.getRes().getSetAllStackCount() == 0 || data.length == 0) {
             Notification.createWarningNotification("Select a stockpile first", 2000);
             return;
         }
         
+        WebComboBox cb = app.getRes().getResourceList();
+        cb.setSelectedIndex(0);
+        
         EditResources er = app.getEditResources();
         List<String> pos = new ArrayList<String>();
         
-        for(int i = 0; i < index; i++) {
+        for(int i = 0; i < data.length; i++) {
             pos.add(data[i].split(":")[2]);
         }
         
