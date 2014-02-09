@@ -6,8 +6,6 @@ import com.alee.extended.painter.DashedBorderPainter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.TooltipWay;
-
 import me.keensta.AppWindow;
 import me.keensta.actionlisteners.pawn.CRaiderListener;
 import me.keensta.actionlisteners.pawn.ColonistEditListener;
@@ -41,9 +39,9 @@ public class PawnEditting {
         pawnEdit.setDrawShade(true);
         pawnEdit.setShadeColor(new Color(221, 20, 20));
         
-        TooltipManager.addTooltip(RRButton, "Clears map of all raiders", TooltipWay.trailing);
-        TooltipManager.addTooltip(CRButton, "Converts all raiders to colonists. This is unstable use at own risk", TooltipWay.left);
-        TooltipManager.addTooltip(CEButton, "Not completed, minimal features implemented", TooltipWay.left);
+        TooltipManager.addTooltip(RRButton, "Clears map of all raiders");
+        TooltipManager.addTooltip(CRButton, "Converts all raiders to colonists. This is unstable use at own risk");
+        TooltipManager.addTooltip(CEButton, "Not completed, minimal features implemented");
         
         createBorder();
         app.add(pawnEdit);

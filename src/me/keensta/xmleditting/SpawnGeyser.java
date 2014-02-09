@@ -30,7 +30,7 @@ public class SpawnGeyser {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
             Element things = rootNode.getChild("Things");
-            String location = getStockpileLocation();
+            String location = getStockpileLocation(doc);
             
             if(location.equalsIgnoreCase("")) {
                 Notification.createInfoNotification("Can't find a stockpile 1x1 named SG", 3000);
@@ -73,38 +73,31 @@ public class SpawnGeyser {
         }
     }
 
-    public String getStockpileLocation() {
-        try {
-            Document doc = builder.build(xmlFile);
-            Element rootNode = doc.getRootElement();
+    public String getStockpileLocation(Document d) {
+        Document doc = d;
+        Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("zoneName"));
-            String location = "";
-            Element remove = null; //Element here so we can remove stockpile
+        Iterator<Element> c = rootNode.getDescendants(new ElementFilter("zoneName"));
+        String location = "";
+        Element remove = null; //Element here so we can remove stockpile
 
-            while(c.hasNext()) {
-                Element e = c.next();
+        while(c.hasNext()) {
+            Element e = c.next();
 
-                if(e.getText().equalsIgnoreCase("SG")) {
-                    Element ep = e.getParentElement();
-                    location = ep.getChild("squares").getChildText("IntVec3");
-               
-                    remove = ep;
-                    break;
-                }
+            if(e.getText().equalsIgnoreCase("SG")) {
+                Element ep = e.getParentElement();
+                location = ep.getChild("squares").getChildText("IntVec3");
+           
+                remove = ep;
+                break;
             }
-            
-            if(remove != null) {
-               Element ep = remove.getParentElement();
-               ep.removeContent(remove);
-            }
-            
-            return location;
-        } catch(IOException io) {
-            io.printStackTrace();
-        } catch(JDOMException e) {
-            e.printStackTrace();
         }
-        return "";
+        
+        if(remove != null) {
+           Element ep = remove.getParentElement();
+           ep.removeContent(remove);
+        }
+        
+        return location;
     }
 }

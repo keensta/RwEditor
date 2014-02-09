@@ -13,6 +13,7 @@ import me.keensta.UI.PawnEditting;
 import me.keensta.UI.Resources;
 import me.keensta.UI.World;
 import me.keensta.util.AppPosition;
+import me.keensta.util.Backup;
 import me.keensta.util.Image;
 import me.keensta.xmleditting.ClearBlood;
 import me.keensta.xmleditting.ClearCorpses;
@@ -50,6 +51,7 @@ public class AppWindow extends JPanel {
     private Resources res;
     private World world;
     private PawnEditting pawnEdit;
+    private Backup bk;
     
     //Editing classes
     private ClearBlood cb;
@@ -146,12 +148,14 @@ public class AppWindow extends JPanel {
 
         menu.saveFileDir.setText(file.getAbsolutePath());
         dataHandler = new DataHandler(this, xmlFile, builder);
+        bk = new Backup();
+        bk.setBackupFile(xmlFile);
         
+        bk.createBackup();
         intilizeClasses();
     }
 
     private void intilizeClasses() {
-        cb = new ClearBlood(xmlFile, builder);
         cc = new ClearCorpses(xmlFile, builder, this);
         cw = new ClearWeapons(xmlFile, builder);
         cr = new ConvertRaiders(xmlFile, builder);

@@ -35,23 +35,22 @@ public class DeleteRaiders {
             Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
-            int i3 = 0;
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("Raider")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
                         markedToBeRemoved.add(e.getParentElement());
-                        i3 += 1;
                     }
                 }
             }
 
             for(int i = 0; i < markedToBeRemoved.size(); i++) {
-                markedToBeRemoved.get(i).getParentElement().removeContent(markedToBeRemoved.get(i));
+                Element e = markedToBeRemoved.get(i);
+                e.getParentElement().removeContent(e);
             }
 
-            Notification.createInfoNotification("Raider(s) Removed: " + i3, 3000);
+            Notification.createInfoNotification("Raider(s) Removed: " + markedToBeRemoved.size(), 3000);
 
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fw = new FileWriter(xmlFile);

@@ -2,19 +2,12 @@ package me.keensta.actionlisteners.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 
-import org.jdom2.Document;
-import org.jdom2.JDOMException;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
-
 public class SaveListener implements ActionListener {
 
+    @SuppressWarnings("unused")
     private AppWindow app;
 
     public SaveListener(AppWindow app) {

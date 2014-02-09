@@ -30,12 +30,9 @@ public class DeleteRubbish {
 
     public void activateCode() {
         try {
-            // TODO: Create it so It can decode CompresedThingMap correctly.
-            // (Working on it)
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            // Gets Rid of Rock Debris
             String string = rootNode.getChildText("CompressedThingMap");
 
             // Get bytes from string
@@ -43,6 +40,9 @@ public class DeleteRubbish {
 
             for(int i = 0; i < byteArray.length; i++) {
                 if(byteArray[i] == 56 || byteArray[i] == 57) {
+/*                    int x = i%200;
+                    int y = i/200;
+                    System.out.println("X: " + x + " Y: " + y);*/
                     byteArray[i] = 0;
                 }
             }
@@ -51,7 +51,6 @@ public class DeleteRubbish {
 
             rootNode.getChild("CompressedThingMap").setText(newCMT);
 
-            // Gets Rid of Slag Debris
             Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Def"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
@@ -68,7 +67,8 @@ public class DeleteRubbish {
             }
 
             for(int i = 0; i < markedToBeRemoved.size(); i++) {
-                markedToBeRemoved.get(i).getParentElement().removeContent(markedToBeRemoved.get(i));
+                Element e = markedToBeRemoved.get(i);
+                e.getParentElement().removeContent(e);
             }
 
             Notification.createInfoNotification("All rubbish has been removed", 3000);
@@ -80,7 +80,7 @@ public class DeleteRubbish {
             xmlOutput.output(doc, fw);
 
             fw.close();
-
+            
         } catch(IOException io) {
             io.printStackTrace();
         } catch(JDOMException e) {

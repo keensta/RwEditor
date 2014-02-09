@@ -1,7 +1,6 @@
 package me.keensta.UI;
 
 import java.awt.Color;
-
 import com.alee.extended.painter.DashedBorderPainter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
@@ -32,7 +31,7 @@ public class Resources {
     private WebSpinner setAllSpinner = new WebSpinner();
 
     private WebButton update = new WebButton("Update");
-
+    
     private UpdateListener ul;
     private SSelectionListener sl;
     private RSelectionListener rl;
@@ -66,7 +65,7 @@ public class Resources {
         app.add(setAllSpinner);
         app.add(setAll);
         app.add(update);
-
+        
         resourcesTitle.setBounds(40, 120, 80, 25);
         stockpiles.setBounds(42, 140, 80, 25);
         stockpileList.setBounds(40, 160, 130, 25);

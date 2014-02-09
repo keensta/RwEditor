@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class Pawn {
     private String age = "19";
     private String health = "100";
     private String sex = "----";
-    private Weapon currentWeapon = Weapon.NONE;
+    private Weapon currentWeapon = Weapon.NOGUN;
     // Psychology vars BEGIN
     private double loyalty;
     private double happiness;
@@ -47,7 +48,7 @@ public class Pawn {
     private double rest;
     // Psychology Vars END
     private List<Trait> traits = new ArrayList<Trait>();
-    private List<Skill> skills = new ArrayList<Skill>();
+    private HashMap<Skill, String> skills = new HashMap<Skill, String>();
 
     public Pawn(Element pawnE, ColonistView cv, AppWindow app) {
         setupClass(pawnE);
@@ -83,6 +84,16 @@ public class Pawn {
         setFear(Double.parseDouble(e.getChild("psychology").getChild("PieceFear").getChildText("CurLevel")));
         setFood(Double.parseDouble(e.getChild("food").getChild("PieceFood").getChildText("CurLevel")));
         setRest(Double.parseDouble(e.getChild("rest").getChild("PieceRest").getChildText("CurLevel")));
+        
+        getSkills(e);
+    }
+
+    private void getSkills(Element e) {
+        Element s = e.getChild("skills");
+        
+        for(Skill skill : Skill.values()) {
+            skills.put(skill, s.getChildText(skill.getTag()));
+        }
     }
 
     private String determinSex(Element e) {
@@ -96,7 +107,7 @@ public class Pawn {
 
         if(p.hasAttributes()) {
             if(p.getAttributeValue("IsNull").equalsIgnoreCase("True")) {
-                return Weapon.NONE;
+                return Weapon.NOGUN;
             } else {
                 return getWeapon(p.getChildText("Def"));
             }
@@ -110,7 +121,7 @@ public class Pawn {
                 return w;
         }
 
-        return Weapon.NONE;
+        return Weapon.NOGUN;
     }
 
     // Setters and Getters
@@ -203,6 +214,10 @@ public class Pawn {
         this.rest = rest;
     }
     
+    public int getSkillValue(Skill s) {
+        return Integer.parseInt(this.skills.get(s));
+    }
+    
     public void savePawn(Pawn p) {
         File xmlFile = app.getFile();
         SAXBuilder builder = app.getBuilder();
@@ -229,6 +244,7 @@ public class Pawn {
                                 ep.getChild("food").getChild("PieceFood").getChild("CurLevel").setText(cv.getFood());
                                 ep.getChild("rest").getChild("PieceRest").getChild("CurLevel").setText(cv.getRest());
                                 setWeapon(ep);
+                                saveSkills(ep); //Updates Pawns Values as it saves..
                                 
                                 //Update Pawn
                                 p.setAge(cv.getAge());
@@ -238,7 +254,7 @@ public class Pawn {
                                 p.setFear(Double.parseDouble(cv.getFear()));
                                 p.setFood(Double.parseDouble(cv.getFood()));
                                 p.setRest(Double.parseDouble(cv.getRest()));
-                                p.setCurrentWeapon(Weapon.valueOf(cv.getWeapon().replace("-", "").replaceAll(" ", "")));
+                                p.setCurrentWeapon(Weapon.valueOf(cv.getWeapon().replace("-", "").replaceAll(" ", "").toUpperCase()));
                             }
                         }
                     }
@@ -259,6 +275,26 @@ public class Pawn {
             io.printStackTrace();
         } catch(JDOMException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void saveSkills(Element ep) {
+        Element e = ep.getChild("skills");
+        
+        skills.put(Skill.CONSTRUCTION, cv.getConstructionLevel());
+        skills.put(Skill.GROWING, cv.getGrowingLevel());
+        skills.put(Skill.RESEARCH, cv.getResearchLevel());
+        skills.put(Skill.MINING, cv.getMiningLevel());
+        skills.put(Skill.SHOOTING, cv.getShootingLevel());
+        skills.put(Skill.MELEE, cv.getMeleeLevel());
+        skills.put(Skill.SOCIAL, cv.getSocialLevel());
+        skills.put(Skill.COOKING, cv.getCookingLevel());
+        skills.put(Skill.MEDICINE, cv.getMedicineLevel());
+        skills.put(Skill.ARTISTIC, cv.getArtisticLevel());
+        skills.put(Skill.CRAFTING, cv.getCraftingLevel());
+        
+        for(Skill s : Skill.values()) {
+            e.getChild(s.getTag()).setText(skills.get(s));
         }
     }
 
@@ -298,7 +334,7 @@ public class Pawn {
             if(w.getName().equalsIgnoreCase(weapon))
                 return w.getWeaponCode();
         }
-        return Weapon.NONE.getWeaponCode();
+        return Weapon.NOGUN.getWeaponCode();
     }
 
 }

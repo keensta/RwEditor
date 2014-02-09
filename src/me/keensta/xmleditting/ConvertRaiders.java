@@ -30,8 +30,7 @@ public class ConvertRaiders {
     public void activateCode(double percentage) {
         // Will implement some thing allowing you to convert 20%, 50% so on..
         percentage = 100;
-        // TODO: Change Kind tag to Colonist. Also Wipe there current job and
-        // add door key item.
+        // TODO: add door key item to newly joined colonist.
         try {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
@@ -39,14 +38,12 @@ public class ConvertRaiders {
             Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
             List<Element> markedToBeChanged = new ArrayList<Element>();
 
-            int i3 = 0;
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("Raider")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
                         markedToBeChanged.add(e);
-                        i3 += 1;
                     }
                 }
             }
@@ -59,7 +56,7 @@ public class ConvertRaiders {
                 e.getParentElement().removeChild("Jobs");
             }
 
-            Notification.createInfoNotification("Raider(s) Converted: " + i3, 3000);
+            Notification.createInfoNotification("Raider(s) Converted: " + markedToBeChanged.size(), 3000);
 
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fw = new FileWriter(xmlFile);

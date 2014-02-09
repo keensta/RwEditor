@@ -6,8 +6,6 @@ import com.alee.extended.painter.DashedBorderPainter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.TooltipWay;
-
 import me.keensta.AppWindow;
 import me.keensta.actionlisteners.world.CCorpseListener;
 import me.keensta.actionlisteners.world.DRubbishListener;
@@ -44,10 +42,10 @@ public class World {
         world.setDrawShade(true);
         world.setShadeColor(new Color(30, 231, 43));
         
-        TooltipManager.addTooltip(CCButton, "Removes all Corpses, Including blood.", TooltipWay.trailing);
-        TooltipManager.addTooltip(CRButton, "Removes all rubbish from the map, include slag and rock debris.", TooltipWay.trailing);
+        TooltipManager.addTooltip(CCButton, "Removes all Corpses, Including blood.");
+        TooltipManager.addTooltip(CRButton, "Removes all rubbish from the map, include slag and rock debris.");
         //TooltipManager.addTooltip(CWButton, "Gets rid of all weapons not in a wepaon rack", TooltipWay.trailing);
-        TooltipManager.addTooltip(SGButton, "Converts any stockpiles called sg to SteamGeysers", TooltipWay.trailing);
+        TooltipManager.addTooltip(SGButton, "Converts any stockpiles called sg to SteamGeysers");
         
         //Temp (Looking for Fix due to game update)
         //CWButton.setEnabled(false);

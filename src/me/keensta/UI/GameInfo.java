@@ -33,7 +33,9 @@ public class GameInfo {
 
         gameInfo.setDrawShade(true);
         gameInfo.setShadeColor(new Color(140, 30, 185));
+        
         sv.setEditable(false);
+        cn.setEditable(false);
         
         createBorder();
         app.add(gameInfo);

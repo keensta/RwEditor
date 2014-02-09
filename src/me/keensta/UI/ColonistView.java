@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.swing.JScrollPane;
+
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -17,6 +19,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
+import com.alee.laf.spinner.WebSpinner;
 import com.alee.laf.text.WebTextField;
 
 import me.keensta.AppWindow;
@@ -24,6 +27,7 @@ import me.keensta.actionlisteners.pawn.ListListener;
 import me.keensta.actionlisteners.pawn.SavePawnListener;
 import me.keensta.colonists.ColonistWindow;
 import me.keensta.colonists.Pawn;
+import me.keensta.colonists.enums.Skill;
 import me.keensta.colonists.enums.Weapon;
 
 public class ColonistView {
@@ -38,6 +42,7 @@ public class ColonistView {
     private WebLabel colonistEditor = new WebLabel("Colonist(s) Editor");
     private WebLabel colonistInfo = new WebLabel("ColonistInfo");
     private WebList list;
+    private JScrollPane sp;
     
     //ColonistInfo Components BEGIN
     private WebLabel colonistBorder = new WebLabel();
@@ -64,8 +69,30 @@ public class ColonistView {
     private WebLabel labelWeapon = new WebLabel("Weapon");
     private WebComboBox fieldWeapon;
     
-    //Skills BEGIN
-    
+    //Skills BEGIN **SkillNameTYPE(Label/Field)** Different to other sets to stop big list dispalying while typeing any skill related stuff.
+    private WebLabel Skills = new WebLabel("Skills");
+    private WebLabel constructionLabel = new WebLabel("Construction");
+    private WebSpinner constructionField = new WebSpinner();
+    private WebLabel growingLabel = new WebLabel("Growing");
+    private WebSpinner growingField = new WebSpinner();
+    private WebLabel researchLabel = new WebLabel("Research");
+    private WebSpinner researchField = new WebSpinner();
+    private WebLabel miningLabel = new WebLabel("Mining");
+    private WebSpinner miningField = new WebSpinner();
+    private WebLabel shootingLabel = new WebLabel("Shooting");
+    private WebSpinner shootingField = new WebSpinner();
+    private WebLabel meleeLabel = new WebLabel("Melee");
+    private WebSpinner meleeField = new WebSpinner();
+    private WebLabel socialLabel = new WebLabel("Social");
+    private WebSpinner socialField = new WebSpinner();
+    private WebLabel cookingLabel = new WebLabel("Cooking");
+    private WebSpinner cookingField = new WebSpinner();
+    private WebLabel medicineLabel = new WebLabel("Medicine");
+    private WebSpinner medicineField = new WebSpinner();
+    private WebLabel artisticLabel = new WebLabel("Artistic");
+    private WebSpinner artisticField = new WebSpinner();
+    private WebLabel craftingLabel = new WebLabel("Crafting");
+    private WebSpinner craftingField = new WebSpinner();
     //Skill END
     //ColonistInfo Components END
     private WebButton savePawn = new WebButton("Save");
@@ -85,6 +112,7 @@ public class ColonistView {
         // Components
         listPawns = loadPawns();
         list = getPawns();
+        sp = new JScrollPane(list);
         
         setUpWeapons();
         
@@ -96,13 +124,13 @@ public class ColonistView {
         
         fieldId.setEditable(false);
         fieldName.setEditable(false);
-        fieldWeapon.setEditable(false);
+        fieldSex.setEditable(false);
         
         // Add to main window
         createBorder();
         createBorder2();
         cw.add(colonistEditor);
-        cw.add(list);
+        cw.add(sp);
         cw.add(colonistInfo);
         cw.add(labelName);
         cw.add(fieldName);
@@ -130,7 +158,7 @@ public class ColonistView {
         
         // Positioning
         colonistEditor.setBounds(5, 0, 105, 25);
-        list.setBounds(5, 35, 150, 365);
+        sp.setBounds(5, 25, 150, 335);
         colonistInfo.setBounds(165, 0, 105, 25);
         
         labelName.setBounds(170, 25, 45, 25);
@@ -159,6 +187,55 @@ public class ColonistView {
         
         list.addListSelectionListener(ll);
         savePawn.addActionListener(spl);
+
+        //Skills
+        cw.add(Skills);
+        cw.add(constructionLabel);
+        cw.add(constructionField);
+        cw.add(growingLabel);
+        cw.add(growingField);
+        cw.add(researchLabel);
+        cw.add(researchField);
+        cw.add(miningLabel);
+        cw.add(miningField);
+        cw.add(shootingLabel);
+        cw.add(shootingField);
+        cw.add(meleeLabel);
+        cw.add(meleeField);
+        cw.add(socialLabel);
+        cw.add(socialField);
+        cw.add(cookingLabel);
+        cw.add(cookingField);
+        cw.add(medicineLabel);
+        cw.add(medicineField);
+        cw.add(artisticLabel);
+        cw.add(artisticField);
+        cw.add(craftingLabel);
+        cw.add(craftingField);
+        
+        Skills.setBounds(165, 230, 45, 25);
+        constructionLabel.setBounds(165, 250, 70, 25);
+        constructionField.setBounds(165, 270, 70, 25);
+        growingLabel.setBounds(240, 250, 70, 25);
+        growingField.setBounds(240, 270, 70, 25);
+        researchLabel.setBounds(315, 250, 70, 25);
+        researchField.setBounds(315, 270, 70, 25);
+        miningLabel.setBounds(390, 250, 70, 25);
+        miningField.setBounds(390, 270, 70, 25);
+        shootingLabel.setBounds(165, 290, 70, 25);
+        shootingField.setBounds(165, 310, 70, 25);
+        meleeLabel.setBounds(240, 290, 70, 25);
+        meleeField.setBounds(240, 310, 70, 25);
+        socialLabel.setBounds(315, 290, 70, 25);
+        socialField.setBounds(315, 310, 70, 25);
+        cookingLabel.setBounds(390, 290, 70, 25);
+        cookingField.setBounds(390, 310, 70, 25);
+        medicineLabel.setBounds(165, 330, 70, 25);
+        medicineField.setBounds(165, 350, 70, 25);
+        artisticLabel.setBounds(240, 330, 70, 25);
+        artisticField.setBounds(240, 350, 70, 25);
+        craftingLabel.setBounds(315, 330, 70, 25);
+        craftingField.setBounds(315, 350, 70, 25);
     }
     
     @SuppressWarnings("rawtypes")
@@ -184,7 +261,7 @@ public class ColonistView {
 
         cw.add(colonistBorder);
 
-        colonistBorder.setBounds(160, 20, 395, 205);
+        colonistBorder.setBounds(160, 20, 395, 375);
     }
     
     private void setUpWeapons() {
@@ -207,6 +284,18 @@ public class ColonistView {
         fieldFood.setText(Double.toString(p.getFood()));
         fieldRest.setText(Double.toString(p.getRest()));
         fieldWeapon.setSelectedItem(p.getCurrentWeapon().getName());
+        
+        constructionField.setValue(p.getSkillValue(Skill.CONSTRUCTION));
+        growingField.setValue(p.getSkillValue(Skill.GROWING));
+        researchField.setValue(p.getSkillValue(Skill.RESEARCH));
+        miningField.setValue(p.getSkillValue(Skill.MINING));
+        shootingField.setValue(p.getSkillValue(Skill.SHOOTING));
+        meleeField.setValue(p.getSkillValue(Skill.MELEE));
+        socialField.setValue(p.getSkillValue(Skill.SOCIAL));
+        cookingField.setValue(p.getSkillValue(Skill.COOKING));
+        medicineField.setValue(p.getSkillValue(Skill.MEDICINE));
+        artisticField.setValue(p.getSkillValue(Skill.ARTISTIC));
+        craftingField.setValue(p.getSkillValue(Skill.CRAFTING));
     }
     
     private List<Pawn> loadPawns() {
@@ -288,5 +377,48 @@ public class ColonistView {
     public String getWeapon() {
         return (String) fieldWeapon.getSelectedItem();
     }
-
+    
+    public String getConstructionLevel() {
+        return Integer.toString((int) constructionField.getValue());
+    }
+    
+    public String getGrowingLevel() {
+        return Integer.toString((int) growingField.getValue());
+    }
+    
+    public String getResearchLevel() {
+        return Integer.toString((int) researchField.getValue());
+    }
+    
+    public String getMiningLevel() {
+        return Integer.toString((int) miningField.getValue());
+    }
+    
+    public String getShootingLevel() {
+        return Integer.toString((int) shootingField.getValue());
+    }
+    
+    public String getMeleeLevel() {
+        return Integer.toString((int) meleeField.getValue());
+    }
+    
+    public String getSocialLevel() {
+        return Integer.toString((int) socialField.getValue());
+    }
+    
+    public String getCookingLevel() {
+        return Integer.toString((int) cookingField.getValue());
+    }
+    
+    public String getMedicineLevel() {
+        return Integer.toString((int) medicineField.getValue());
+    }
+    
+    public String getArtisticLevel() {
+        return Integer.toString((int) artisticField.getValue());
+    }
+    
+    public String getCraftingLevel() {
+        return Integer.toString((int) craftingField.getValue());
+    }
 }

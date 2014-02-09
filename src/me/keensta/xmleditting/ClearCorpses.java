@@ -22,12 +22,10 @@ public class ClearCorpses {
 
     private File xmlFile;
     private SAXBuilder builder;
-    private AppWindow app;
 
     public ClearCorpses(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
-        this.app = app;
     }
 
     public void activateCode() {
@@ -40,7 +38,7 @@ public class ClearCorpses {
 
             while(c.hasNext()) {
                 Element e = c.next();
-
+                
                 if(e.getValue().equalsIgnoreCase("Corpse")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
                         markedToBeRemoved.add(e.getParentElement());
@@ -49,21 +47,23 @@ public class ClearCorpses {
             }
 
             for(int i = 0; i < markedToBeRemoved.size(); i++) {
-                markedToBeRemoved.get(i).getParentElement().removeContent(markedToBeRemoved.get(i));
+                Element e = markedToBeRemoved.get(i);
+                e.getParentElement().removeContent(e);
             }
 
-            ClearBlood cb = app.getClearBlood();
+            ClearBlood cb = new ClearBlood(xmlFile, builder);
             cb.activateCode();
 
-            Notification.createInfoNotification("Blood removed & Corpse(s) removed", 3000);
+            Notification.createInfoNotification("Blood & Corpse(s) removed", 3000);
 
             XMLOutputter xmlOutput = new XMLOutputter();
-            FileWriter fw = new FileWriter(xmlFile);
+            FileWriter fw = new FileWriter(cb.getXmlFile());
 
             xmlOutput.setFormat(Format.getPrettyFormat());
             xmlOutput.output(doc, fw);
 
             fw.close();
+
 
         } catch(IOException io) {
             io.printStackTrace();
