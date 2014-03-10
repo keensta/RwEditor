@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 
 import org.apache.commons.codec.binary.Base64;
@@ -20,20 +21,24 @@ import org.jdom2.output.XMLOutputter;
 
 public class DeleteRubbish {
 
-    File xmlFile;
-    SAXBuilder builder;
-
-    public DeleteRubbish(File xmlFile, SAXBuilder builder) {
+    private File xmlFile;
+    private SAXBuilder builder;
+    private AppWindow app;
+    
+    public DeleteRubbish(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = app;
     }
 
     public void activateCode() {
         try {
+            xmlFile = app.getFile();
+            
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            String string = rootNode.getChildText("CompressedThingMap");
+            String string = rootNode.getChildText("compressedThingMap");
 
             // Get bytes from string
             byte[] byteArray = Base64.decodeBase64(string.getBytes());
@@ -49,18 +54,18 @@ public class DeleteRubbish {
 
             String newCMT = new String(Base64.encodeBase64(byteArray));
 
-            rootNode.getChild("CompressedThingMap").setText(newCMT);
+            rootNode.getChild("compressedThingMap").setText(newCMT);
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Def"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("def"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("SandbagRubble") || e.getValue().equalsIgnoreCase("FilthSand")
-                        || e.getValue().equalsIgnoreCase("FilthDirt") || e.getValue().equalsIgnoreCase("SlagRubble")
+                        || e.getValue().equalsIgnoreCase("FilthDirt") || e.getValue().equalsIgnoreCase("DebrisSlag")
                         || e.getValue().equalsIgnoreCase("RockRubble")) {
-                    if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
+                    if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         markedToBeRemoved.add(e.getParentElement());
                     }
                 }
@@ -80,6 +85,8 @@ public class DeleteRubbish {
             xmlOutput.output(doc, fw);
 
             fw.close();
+            
+            app.setFile(xmlFile);
             
         } catch(IOException io) {
             io.printStackTrace();

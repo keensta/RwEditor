@@ -2,14 +2,12 @@ package me.keensta.colonists;
 
 import java.awt.Dimension;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import com.alee.laf.rootpane.WebFrame;
 
 import me.keensta.AppWindow;
-import me.keensta.UI.AboutView;
 import me.keensta.UI.ColonistView;
 
 @SuppressWarnings("unused")

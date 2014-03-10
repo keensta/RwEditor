@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 
 import org.jdom2.Document;
@@ -21,10 +22,12 @@ public class ConvertRaiders {
 
     private File xmlFile;
     private SAXBuilder builder;
+    private AppWindow app;
 
-    public ConvertRaiders(File xmlFile, SAXBuilder builder) {
+    public ConvertRaiders(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = app;
     }
 
     public void activateCode(double percentage) {
@@ -32,17 +35,19 @@ public class ConvertRaiders {
         percentage = 100;
         // TODO: add door key item to newly joined colonist.
         try {
+            xmlFile = app.getFile();
+            
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
             List<Element> markedToBeChanged = new ArrayList<Element>();
 
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("Raider")) {
-                    if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
+                    if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         markedToBeChanged.add(e);
                     }
                 }
@@ -52,8 +57,8 @@ public class ConvertRaiders {
                 Element e = markedToBeChanged.get(i);
 
                 e.setText("Colonist");
-                e.getParentElement().getChild("Kind").setText("Colonist");
-                e.getParentElement().removeChild("Jobs");
+                e.getParentElement().getChild("kind").setText("Colonist");
+                e.getParentElement().removeChild("jobs");
             }
 
             Notification.createInfoNotification("Raider(s) Converted: " + markedToBeChanged.size(), 3000);
@@ -65,6 +70,8 @@ public class ConvertRaiders {
             xmlOutput.output(doc, fw);
 
             fw.close();
+            
+            app.setFile(xmlFile);
 
         } catch(IOException io) {
             io.printStackTrace();

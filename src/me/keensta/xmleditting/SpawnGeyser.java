@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
+
+import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 
 import org.jdom2.Attribute;
@@ -19,17 +21,21 @@ public class SpawnGeyser {
 
     private File xmlFile;
     private SAXBuilder builder;
+    private AppWindow app;
 
-    public SpawnGeyser(File xmlFile, SAXBuilder builder) {
+    public SpawnGeyser(File xmlFile, SAXBuilder builder, AppWindow appWindow) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = appWindow;
     } 
 
     public void activateCode() {
         try {
+            xmlFile = app.getFile();
+            
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
-            Element things = rootNode.getChild("Things");
+            Element things = rootNode.getChild("things");
             String location = getStockpileLocation(doc);
             
             if(location.equalsIgnoreCase("")) {
@@ -37,15 +43,16 @@ public class SpawnGeyser {
                 return;
             }
             
-            Element thing = new Element("Thing");
-            Element def = new Element("Def");
-            Element id = new Element("ID");
-            Element pos = new Element("Pos");
-            Element rot = new Element("Rot");
+            int thingId = app.getDataHandler().getDataInt("mapInfo/maxThingIDIndex", app.getFile().getName()) + 1;
+            Element thing = new Element("thing");
+            Element def = new Element("def");
+            Element id = new Element("id");
+            Element pos = new Element("pos");
+            Element rot = new Element("rot");
             
-            thing.setAttribute(new Attribute("Class", "Building_SteamGeyser"));
+            thing.setAttribute(new Attribute("Class", "SteamGeyser"));
             def.setText("SteamGeyser");
-            id.setText("SteamGeyser0");
+            id.setText("SteamGeyser" + thingId);
             pos.setText(location);
             rot.setText("1");
             
@@ -55,6 +62,7 @@ public class SpawnGeyser {
             thing.addContent(rot);
             
             things.addContent(thing);
+            app.getDataHandler().setData("mapInfo/maxThingIDIndex", Integer.toString(thingId), app.getFile().getName());
             
             Notification.createInfoNotification("Spawned SteamGeyser at " + location, 3000);
             
@@ -65,6 +73,8 @@ public class SpawnGeyser {
             xmlOutput.output(doc, fw);
 
             fw.close();
+            
+            app.setFile(xmlFile);
             
         } catch(IOException io) {
             io.printStackTrace();
@@ -86,7 +96,7 @@ public class SpawnGeyser {
 
             if(e.getText().equalsIgnoreCase("SG")) {
                 Element ep = e.getParentElement();
-                location = ep.getChild("squares").getChildText("IntVec3");
+                location = ep.getChild("squares").getChildText("li");
            
                 remove = ep;
                 break;

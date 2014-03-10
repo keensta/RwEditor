@@ -28,8 +28,8 @@ public class GameInfo {
 
     public void BuildComponents() {
 
-        cn = new WebTextField(app.getDataHandler().getDataString("ColonyInfo/ColonyName"));
-        sv = new WebTextField(app.getDataHandler().getDataString("GameVersion"));
+        cn = new WebTextField(app.getDataHandler().getDataString("colonyInfo/colonyName", app.getFile().getName()));
+        sv = new WebTextField(app.getDataHandler().getDataString("gameVersion", app.getFile().getName()));
 
         gameInfo.setDrawShade(true);
         gameInfo.setShadeColor(new Color(140, 30, 185));
@@ -54,8 +54,8 @@ public class GameInfo {
     }
     
     public void updateComponents() {
-        cn.setText(app.getDataHandler().getDataString("ColonyInfo/ColonyName"));
-        sv.setText(app.getDataHandler().getDataString("GameVersion"));
+        cn.setText(app.getDataHandler().getDataString("ColonyInfo/ColonyName", app.getFile().getName()));
+        sv.setText(app.getDataHandler().getDataString("GameVersion", app.getFile().getName()));
         
         app.revalidate();
     }

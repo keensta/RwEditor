@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 
 import org.jdom2.Document;
@@ -19,27 +20,31 @@ import org.jdom2.output.XMLOutputter;
 
 public class DeleteRaiders {
 
-    File xmlFile;
-    SAXBuilder builder;
+    private File xmlFile;
+    private SAXBuilder builder;
+    private AppWindow app;
 
-    public DeleteRaiders(File xmlFile, SAXBuilder builder) {
+    public DeleteRaiders(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = app;
     }
 
     public void activateCode() {
         try {
+            xmlFile = app.getFile();
+            
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("Raider")) {
-                    if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
+                    if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         markedToBeRemoved.add(e.getParentElement());
                     }
                 }
@@ -60,6 +65,8 @@ public class DeleteRaiders {
 
             fw.close();
 
+            app.setFile(xmlFile);
+            
         } catch(IOException io) {
             io.printStackTrace();
         } catch(JDOMException e) {

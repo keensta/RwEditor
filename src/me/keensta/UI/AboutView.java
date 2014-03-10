@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import me.keensta.AppWindow;
+import me.keensta.util.AppPosition;
 
 import com.alee.extended.image.WebDecoratedImage;
 import com.alee.extended.window.WebProgressDialog;
@@ -108,11 +109,11 @@ public class AboutView extends JPanel {
         add(img1);
         add(wl);
 
-        version.setBounds(132, 0, 100, 23);
-        copyright.setBounds(132, 23, 100, 23);
-        author.setBounds(132, 46, 100, 23);
-        testers.setBounds(132, 69, 200, 23);
-        img1.setBounds(0, 98, 128, 128);
-        wl.setBounds(132, 98, 319, 133);
+        version.setBounds(AppPosition.GAMEVERSION_X, AppPosition.GAMEVERSION_Y, 100, 23);
+        copyright.setBounds(AppPosition.COPYRIGHT_X, AppPosition.COPYRIGHT_Y, 100, 23);
+        author.setBounds(AppPosition.AUTHOR_X, AppPosition.AUTHOR_Y, 100, 23);
+        testers.setBounds(AppPosition.TESTERS_X, AppPosition.TESTERS_Y, 200, 23);
+        img1.setBounds(AppPosition.IMG1_X, AppPosition.IMG1_Y, 128, 128);
+        wl.setBounds(AppPosition.W1_X, AppPosition.W1_y, 319, 133);
     }
 }

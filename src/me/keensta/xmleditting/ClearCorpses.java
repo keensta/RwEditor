@@ -22,25 +22,29 @@ public class ClearCorpses {
 
     private File xmlFile;
     private SAXBuilder builder;
+    private AppWindow app;
 
     public ClearCorpses(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = app;
     }
 
     public void activateCode() {
         try {
+            xmlFile = app.getFile();
+            
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Def"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("def"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
             while(c.hasNext()) {
                 Element e = c.next();
                 
-                if(e.getValue().equalsIgnoreCase("Corpse")) {
-                    if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
+                if(e.getValue().contains("Corpse")) {
+                    if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         markedToBeRemoved.add(e.getParentElement());
                     }
                 }
@@ -63,8 +67,9 @@ public class ClearCorpses {
             xmlOutput.output(doc, fw);
 
             fw.close();
-
-
+            
+            app.setFile(xmlFile);
+            
         } catch(IOException io) {
             io.printStackTrace();
         } catch(JDOMException e) {

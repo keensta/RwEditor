@@ -1,4 +1,4 @@
-package me.keensta.util;
+package me.keensta.file;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -6,17 +6,20 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import me.keensta.AppWindow;
+
 public class Backup {
     
     private File xmlFileBK;
+    private AppWindow app;
     
-    public Backup() {
-        
+    public Backup(AppWindow app) {
+        this.app = app;
     }
     
     public void createBackup() {
         try {
-            /*File targetDir = new File(getCurrentDirectory(System.getProperty("os.name")));
+            File targetDir = new File("//Backup");
             
             if(!targetDir.exists())
                 targetDir.mkdir();
@@ -35,17 +38,19 @@ public class Backup {
             in.close();
             out.close();
             
-            if(bk.renameTo(new File(targetDir+ bk.getName()))) {
+            if(bk.renameTo(new File(targetDir + bk.getName()))) {
                 System.out.println(new File(targetDir+ bk.getName()));
-                System.out.println("Made");
-            } else {
-                System.out.println("Failed");
-            }
-            */
+            } 
+            
+            setBackupFile(bk);
             
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+    
+    public void restoreBackup(File xmlFile) {
+        app.setFiles(xmlFile, null);
     }
     
     public void setBackupFile(File xmlFile) {
@@ -56,12 +61,4 @@ public class Backup {
         return xmlFileBK;
     }
     
-    private String getCurrentDirectory(String sn) {
-        if(sn.contains("Windows"))
-            return "C:\\Users\\" + System.getProperty("user.name") + "\\AppData\\LocalLow\\Ludeon Studios\\RimWorld\\Saves\\RWEditor\\ ";
-        else if(sn.contains("OS X"))
-            return "//Users//" + System.getProperty("user.name") + "//Library//Caches//unity.Ludeon Studios.RimWorld//Saves//RWEditor// ";
-        return "";
-    }
-
 }

@@ -3,13 +3,11 @@ package me.keensta.actionlisteners.resources;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
 
 import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 import me.keensta.xmleditting.EditResources;
 
-@SuppressWarnings("unused")
 public class UpdateListener implements ActionListener {
 
     private AppWindow app;
@@ -24,7 +22,7 @@ public class UpdateListener implements ActionListener {
         String[] data = app.getRes().getData();
         int index = app.getRes().getResSelectedIndex();
         
-        if(index == 0 || app.getRes().getStackCount() == "" || data == null || data.length == 1) {
+        if(index == 0 || app.getRes().getStackCount().equals("") || data == null || data.length == 1) {
             Notification.createWarningNotification("Please select a resource first", 2000);
             return;
         } else {

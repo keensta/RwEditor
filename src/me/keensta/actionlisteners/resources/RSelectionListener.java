@@ -18,7 +18,7 @@ public class RSelectionListener implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         WebComboBox cb = (WebComboBox) e.getSource();
-        int index = (int) (cb.getSelectedIndex());
+        int index = cb.getSelectedIndex();
         String[] data = app.getRes().getData();
        
         if(index <= 0 || data.length == 1)

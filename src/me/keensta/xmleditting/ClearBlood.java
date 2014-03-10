@@ -27,14 +27,14 @@ public class ClearBlood {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Def"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("def"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
             while(c.hasNext()) {
                 Element e = c.next();
 
-                if(e.getValue().equalsIgnoreCase("Blood")) {
-                    if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
+                if(e.getValue().equalsIgnoreCase("FilthBlood")) {
+                    if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         markedToBeRemoved.add(e.getParentElement());
                     }
                 }

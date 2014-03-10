@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 
 import org.jdom2.Document;
@@ -21,14 +22,18 @@ public class ClearWeapons {
 
     private File xmlFile;
     private SAXBuilder builder;
-
-    public ClearWeapons(File xmlFile, SAXBuilder builder) {
+    private AppWindow app;
+    
+    public ClearWeapons(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = app;
     }
 
     public void activeCode() {
         try {
+            xmlFile = app.getFile();
+            
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
@@ -73,6 +78,8 @@ public class ClearWeapons {
             xmlOutput.output(doc, fw);
 
             fw.close();
+            
+            app.setFile(xmlFile);
 
         } catch(IOException io) {
             io.printStackTrace();

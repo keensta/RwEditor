@@ -72,47 +72,56 @@ public class Pawn {
 
     private void setupClass(Element e) {
         setName(e.getChild("story").getChildText("name.nick"));
-        setId(e.getChildText("ID"));
+        setId(e.getChildText("id"));
 
-        setAge(e.getChildText("Age"));
-        setHealth(e.getChild("healthTracker").getChildText("PawnHealth"));
+        setAge(e.getChildText("age"));
+        setHealth(e.getChild("healthTracker").getChildText("pawnHealth"));
         setSex(determinSex(e));
         setCurrentWeapon(hasWeapon(e));
 
-        setLoyalty(Double.parseDouble(e.getChild("psychology").getChild("LoyaltyBase").getChildText("CurLevel")));
-        setHappiness(Double.parseDouble(e.getChild("psychology").getChild("PieceHappiness").getChildText("CurLevel")));
-        setFear(Double.parseDouble(e.getChild("psychology").getChild("PieceFear").getChildText("CurLevel")));
-        setFood(Double.parseDouble(e.getChild("food").getChild("PieceFood").getChildText("CurLevel")));
-        setRest(Double.parseDouble(e.getChild("rest").getChild("PieceRest").getChildText("CurLevel")));
+        setLoyalty(Double.parseDouble(e.getChild("psychology").getChild("loyaltyBase").getChildText("curLevel")));
+        setHappiness(Double.parseDouble(e.getChild("psychology").getChild("pieceHappiness").getChildText("curLevel")));
+        setFear(Double.parseDouble(e.getChild("psychology").getChild("pieceFear").getChildText("curLevel")));
+        setFood(Double.parseDouble(e.getChild("food").getChild("pieceFood").getChildText("curLevel")));
+        setRest(Double.parseDouble(e.getChild("rest").getChild("pieceRest").getChildText("curLevel")));
         
         getSkills(e);
     }
 
     private void getSkills(Element e) {
         Element s = e.getChild("skills");
+        Element s2 = s.getChild("skills");
+        Iterator<Element> skills = s2.getDescendants(new ElementFilter("li"));
         
-        for(Skill skill : Skill.values()) {
-            skills.put(skill, s.getChildText(skill.getTag()));
+        while(skills.hasNext()) {
+            Element skill = skills.next();
+            Element skillDef = skill.getChild("def");
+            String skillLevel = skill.getChildText("level");
+            
+            if(skillLevel == null)
+                skillLevel = "0";
+            
+            this.skills.put(Skill.valueOf(skillDef.getText().toUpperCase()), skillLevel);
         }
     }
 
     private String determinSex(Element e) {
-        if(e.getChild("Sex") == null)
+        if(e.getChild("sex") == null)
             return "Male";
         return "Female";
     }
 
     private Weapon hasWeapon(Element e) {
-        Element p = e.getChild("equipment").getChild("Primary");
+        Element p = e.getChild("equipment").getChild("primary");
 
         if(p.hasAttributes()) {
             if(p.getAttributeValue("IsNull").equalsIgnoreCase("True")) {
                 return Weapon.NOGUN;
             } else {
-                return getWeapon(p.getChildText("Def"));
+                return getWeapon(p.getChildText("def"));
             }
         } else
-            return getWeapon(p.getChildText("Def"));
+            return getWeapon(p.getChildText("def"));
     }
 
     private Weapon getWeapon(String weaponCode) {
@@ -218,6 +227,48 @@ public class Pawn {
         return Integer.parseInt(this.skills.get(s));
     }
     
+    public void maxPawnHealth() {
+        File xmlFile = app.getFile();
+        SAXBuilder builder = app.getBuilder();
+        try {
+            Document doc = builder.build(xmlFile);
+            Element rootNode = doc.getRootElement();
+
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
+
+            while(c.hasNext()) {
+                Element e = c.next();
+
+                if(e.getValue().equalsIgnoreCase("Colonist")) {
+                    Element ep = e.getParentElement();
+                    if(ep.getName().equalsIgnoreCase("thing")) {
+                        if(ep.getAttributeValue("Class").equalsIgnoreCase("Pawn")) {
+                            if(ep.getChild("story").getChildText("name.nick").equalsIgnoreCase(this.getName())) {
+                                //Update File
+                                ep.getChild("healthTracker").getChild("pawnHealth").setText("100");
+                                //Update Pawn
+                                this.setHealth("100");
+                            }
+                        }
+                    }
+                }
+            }
+            
+            XMLOutputter xmlOutput = new XMLOutputter();
+            FileWriter fw = new FileWriter(xmlFile);
+
+            xmlOutput.setFormat(Format.getPrettyFormat());
+            xmlOutput.output(doc, fw);
+
+            fw.close();
+            
+        } catch(IOException io) {
+            io.printStackTrace();
+        } catch(JDOMException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public void savePawn(Pawn p) {
         File xmlFile = app.getFile();
         SAXBuilder builder = app.getBuilder();
@@ -225,24 +276,24 @@ public class Pawn {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
 
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("Colonist")) {
                     Element ep = e.getParentElement();
-                    if(ep.getName().equalsIgnoreCase("Thing")) {
+                    if(ep.getName().equalsIgnoreCase("thing")) {
                         if(ep.getAttributeValue("Class").equalsIgnoreCase("Pawn")) {
                             if(ep.getChild("story").getChildText("name.nick").equalsIgnoreCase(p.getName())) {
                                 //Update File
-                                ep.getChild("Age").setText(cv.getAge());
-                                ep.getChild("healthTracker").getChild("PawnHealth").setText(cv.getHealth());
-                                ep.getChild("psychology").getChild("LoyaltyBase").getChild("CurLevel").setText(cv.getLoyalty());
-                                ep.getChild("psychology").getChild("PieceHappiness").getChild("CurLevel").setText(cv.getHappiness());
-                                ep.getChild("psychology").getChild("PieceFear").getChild("CurLevel").setText(cv.getFear());
-                                ep.getChild("food").getChild("PieceFood").getChild("CurLevel").setText(cv.getFood());
-                                ep.getChild("rest").getChild("PieceRest").getChild("CurLevel").setText(cv.getRest());
+                                ep.getChild("age").setText(cv.getAge());
+                                ep.getChild("healthTracker").getChild("pawnHealth").setText(cv.getHealth());
+                                ep.getChild("psychology").getChild("loyaltyBase").getChild("curLevel").setText(cv.getLoyalty());
+                                ep.getChild("psychology").getChild("pieceHappiness").getChild("curLevel").setText(cv.getHappiness());
+                                ep.getChild("psychology").getChild("pieceFear").getChild("curLevel").setText(cv.getFear());
+                                ep.getChild("food").getChild("pieceFood").getChild("curLevel").setText(cv.getFood());
+                                ep.getChild("rest").getChild("pieceRest").getChild("curLevel").setText(cv.getRest());
                                 setWeapon(ep);
                                 saveSkills(ep); //Updates Pawns Values as it saves..
                                 
@@ -304,18 +355,18 @@ public class Pawn {
         
         if(weaponCode.length() == 0) {
             Element equipment = ep.getChild("equipment");
-            equipment.removeContent(equipment.getChild("Primary"));
+            equipment.removeContent(equipment.getChild("primary"));
             
-            Element primary = new Element("Primary");
+            Element primary = new Element("primary");
             
             primary.setAttribute(new Attribute("IsNull", "True"));
             equipment.addContent(primary);
         } else {
             Element equipment = ep.getChild("equipment");
-            Element prim = new Element("Primary");
-            Element def = new Element("Def");
-            Element id = new Element("ID");
-            Element health = new Element("Health");
+            Element prim = new Element("primary");
+            Element def = new Element("def");
+            Element id = new Element("id");
+            Element health = new Element("health");
             
             def.setText(weaponCode);
             id.setText(weaponCode+"0");
@@ -324,7 +375,7 @@ public class Pawn {
             prim.addContent(id);
             prim.addContent(health);
             
-            equipment.removeContent(equipment.getChild("Primary"));
+            equipment.removeContent(equipment.getChild("primary"));
             equipment.addContent(prim);
         }
     }

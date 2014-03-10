@@ -3,7 +3,6 @@ package me.keensta.actionlisteners.menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -30,10 +29,17 @@ public class LoadListener implements ActionListener {
 
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-                app.setXmlFile(chooser.getSelectedFile());
+                app.setFiles(chooser.getSelectedFile(), getModsLoadedFile(chooser.getCurrentDirectory()));
                 app.makeVisible((loadedBefore ? 1 : 0));
                 loadedBefore = true;
         }
+    }
+
+    private File getModsLoadedFile(File currentDirectory) {
+        String newDir = currentDirectory.getAbsolutePath().replace("Saves", "");
+        File modsFile = new File(newDir + "ModsConfig.xml");
+
+        return modsFile;
     }
 
     private String getCurrentDirectory(String sn) {

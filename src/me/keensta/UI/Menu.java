@@ -2,7 +2,9 @@ package me.keensta.UI;
 
 import me.keensta.AppWindow;
 import me.keensta.actionlisteners.menu.AboutListener;
+import me.keensta.actionlisteners.menu.BackUpListener;
 import me.keensta.actionlisteners.menu.LoadListener;
+import me.keensta.actionlisteners.menu.RestoreListener;
 import me.keensta.actionlisteners.menu.SaveListener;
 import me.keensta.util.AppPosition;
 
@@ -22,12 +24,15 @@ public class Menu {
     private LoadListener ll;
     private SaveListener sl;
     private AboutListener about;
+    private BackUpListener bkl;
+    private RestoreListener rsl;
 
     public WebMenuItem load;
     public WebMenuItem save;
-    
+    public WebMenuItem backup;
+    public WebMenuItem restore;
 
-    public WebLabel saveFile = new WebLabel("Save File");
+    public WebLabel saveFile = new WebLabel("Save File:");
     public WebTextField saveFileDir = new WebTextField();
 
 
@@ -37,12 +42,15 @@ public class Menu {
         ll = new LoadListener(app);
         sl = new SaveListener(app);
         about = new AboutListener(app);
+        bkl = new BackUpListener(app);
+        rsl = new RestoreListener(app);
     }
 
     public WebMenuBar createMenu(WebMenuBar menuVar) {
         menuVar = new WebMenuBar();
         menuVar.setMenuBarStyle(MenuBarStyle.standalone);
         setUpSaveArea();
+        
         return setupMenuBar(menuVar);
     }
     
@@ -63,6 +71,21 @@ public class Menu {
                         setEnabled(false);
                     }
                 });
+                
+                add(backup = new WebMenuItem("Backup") {
+                    {
+                        addActionListener(bkl);
+                        setEnabled(false);
+                    }
+                });
+                
+                add(restore = new WebMenuItem("Restore") {
+                    {
+                        addActionListener(rsl);
+                        setEnabled(false);
+                    }
+                });
+                
             }
         });
 

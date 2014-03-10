@@ -23,6 +23,7 @@ import com.alee.laf.spinner.WebSpinner;
 import com.alee.laf.text.WebTextField;
 
 import me.keensta.AppWindow;
+import me.keensta.actionlisteners.pawn.HealAllListener;
 import me.keensta.actionlisteners.pawn.ListListener;
 import me.keensta.actionlisteners.pawn.SavePawnListener;
 import me.keensta.colonists.ColonistWindow;
@@ -96,9 +97,11 @@ public class ColonistView {
     //Skill END
     //ColonistInfo Components END
     private WebButton savePawn = new WebButton("Save");
+    private WebButton healAll = new WebButton("Heal All");
     
     private ListListener ll;
     private SavePawnListener spl;
+    private HealAllListener hal;
 
     public ColonistView(AppWindow app, ColonistWindow cw) {
         this.app = app;
@@ -106,6 +109,7 @@ public class ColonistView {
         
         ll = new ListListener(cw, app);
         spl = new SavePawnListener(cw);
+        hal = new HealAllListener(cw);
     }
 
     public void createWindow() {
@@ -155,6 +159,7 @@ public class ColonistView {
         cw.add(labelWeapon);
         cw.add(fieldWeapon);
         cw.add(savePawn);
+        cw.add(healAll);
         
         // Positioning
         colonistEditor.setBounds(5, 0, 105, 25);
@@ -184,9 +189,11 @@ public class ColonistView {
         labelWeapon.setBounds(170, 195, 55, 25);
         fieldWeapon.setBounds(225, 195, 325, 25);
         savePawn.setBounds(470, 365, 80, 25);
+        healAll.setBounds(5, 365, 150, 25);
         
         list.addListSelectionListener(ll);
         savePawn.addActionListener(spl);
+        healAll.addActionListener(hal);
 
         //Skills
         cw.add(Skills);
@@ -213,29 +220,29 @@ public class ColonistView {
         cw.add(craftingLabel);
         cw.add(craftingField);
         
-        Skills.setBounds(165, 230, 45, 25);
-        constructionLabel.setBounds(165, 250, 70, 25);
-        constructionField.setBounds(165, 270, 70, 25);
-        growingLabel.setBounds(240, 250, 70, 25);
-        growingField.setBounds(240, 270, 70, 25);
-        researchLabel.setBounds(315, 250, 70, 25);
-        researchField.setBounds(315, 270, 70, 25);
-        miningLabel.setBounds(390, 250, 70, 25);
-        miningField.setBounds(390, 270, 70, 25);
-        shootingLabel.setBounds(165, 290, 70, 25);
-        shootingField.setBounds(165, 310, 70, 25);
-        meleeLabel.setBounds(240, 290, 70, 25);
-        meleeField.setBounds(240, 310, 70, 25);
-        socialLabel.setBounds(315, 290, 70, 25);
-        socialField.setBounds(315, 310, 70, 25);
-        cookingLabel.setBounds(390, 290, 70, 25);
-        cookingField.setBounds(390, 310, 70, 25);
-        medicineLabel.setBounds(165, 330, 70, 25);
-        medicineField.setBounds(165, 350, 70, 25);
-        artisticLabel.setBounds(240, 330, 70, 25);
-        artisticField.setBounds(240, 350, 70, 25);
-        craftingLabel.setBounds(315, 330, 70, 25);
-        craftingField.setBounds(315, 350, 70, 25);
+        Skills.setBounds(170, 230, 45, 25);
+        constructionLabel.setBounds(170, 250, 70, 25);
+        constructionField.setBounds(170, 270, 70, 25);
+        growingLabel.setBounds(245, 250, 70, 25);
+        growingField.setBounds(245, 270, 70, 25);
+        researchLabel.setBounds(320, 250, 70, 25);
+        researchField.setBounds(320, 270, 70, 25);
+        miningLabel.setBounds(395, 250, 70, 25);
+        miningField.setBounds(395, 270, 70, 25);
+        shootingLabel.setBounds(170, 290, 70, 25);
+        shootingField.setBounds(170, 310, 70, 25);
+        meleeLabel.setBounds(245, 290, 70, 25);
+        meleeField.setBounds(245, 310, 70, 25);
+        socialLabel.setBounds(320, 290, 70, 25);
+        socialField.setBounds(320, 310, 70, 25);
+        cookingLabel.setBounds(395, 290, 70, 25);
+        cookingField.setBounds(395, 310, 70, 25);
+        medicineLabel.setBounds(170, 330, 70, 25);
+        medicineField.setBounds(170, 350, 70, 25);
+        artisticLabel.setBounds(245, 330, 70, 25);
+        artisticField.setBounds(245, 350, 70, 25);
+        craftingLabel.setBounds(320, 330, 70, 25);
+        craftingField.setBounds(320, 350, 70, 25);
     }
     
     @SuppressWarnings("rawtypes")
@@ -307,13 +314,13 @@ public class ColonistView {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
 
             while(c.hasNext()) {
                 Element e = c.next();
 
                 if(e.getValue().equalsIgnoreCase("Colonist")) {
-                    if(e.getParentElement().getName().equalsIgnoreCase("Thing")) {
+                    if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         if(e.getParentElement().getAttributeValue("Class").equalsIgnoreCase("Pawn"))
                         pawns.add(new Pawn(e.getParentElement(), this, app));
                     }

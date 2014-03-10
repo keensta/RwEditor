@@ -22,10 +22,12 @@ public class EditResources {
 
     private File xmlFile;
     private SAXBuilder builder;
-
-    public EditResources(File xmlFile, SAXBuilder builder) {
+    private AppWindow app;
+    
+    public EditResources(File xmlFile, SAXBuilder builder, AppWindow app) {
         this.xmlFile = xmlFile;
         this.builder = builder;
+        this.app = app;
     }
 
     public EditResources(AppWindow app) {
@@ -35,11 +37,13 @@ public class EditResources {
 
     public void activateCode(String pos, String stackCount) {
         try {
+            xmlFile = app.getFile();
+            
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
-            Element things = rootNode.getChild("Things");
+            Element things = rootNode.getChild("things");
 
-            Iterator<Element> c = things.getDescendants(new ElementFilter("Pos"));
+            Iterator<Element> c = things.getDescendants(new ElementFilter("pos"));
 
             while(c.hasNext()) {
                 Element e = c.next();
@@ -65,6 +69,8 @@ public class EditResources {
 
             fw.close();
             
+            app.setFile(xmlFile);
+            
         } catch(IOException io) {
             io.printStackTrace();
         } catch(JDOMException e) {
@@ -76,9 +82,9 @@ public class EditResources {
         try {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
-            Element things = rootNode.getChild("Things");
+            Element things = rootNode.getChild("things");
 
-            Iterator<Element> c = things.getDescendants(new ElementFilter("Pos"));
+            Iterator<Element> c = things.getDescendants(new ElementFilter("pos"));
 
             while(c.hasNext()) {
                 Element e = c.next();
@@ -87,7 +93,7 @@ public class EditResources {
                     Element eP = e.getParentElement();
                     if(eP.hasAttributes()) {
                         if(eP.getAttributeValue("Class").equalsIgnoreCase("ThingResource")) {
-                            eP.getChild("StackCount").setText(stackCount);
+                            eP.getChild("stackCount").setText(stackCount);
                             continue;
                         }
                     }
@@ -117,7 +123,7 @@ public class EditResources {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("Zone"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("li"));
 
             // Adding blank line
             stockPiles.add("");
@@ -126,7 +132,7 @@ public class EditResources {
                 Element e = c.next();
 
                 if(e.hasAttributes()) {
-                    if(e.getAttributeValue("Class").equalsIgnoreCase("Zone_Storage")) {
+                    if(e.getAttributeValue("Class").equalsIgnoreCase("Zone_Stockpile")) {
                         stockPiles.add(e.getChildText("zoneName"));
                     }
                 }
@@ -146,8 +152,7 @@ public class EditResources {
         try {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
-            Element zm = rootNode.getChild("ZoneManager");
-
+            Element zm = rootNode.getChild("zoneManager");
             Iterator<Element> c = zm.getDescendants(new ElementFilter("zoneName"));
             List<String> locations = new ArrayList<String>();
 
@@ -161,7 +166,7 @@ public class EditResources {
                     for(int i = 0; i < squares.getChildren().size(); i++) {
                         locations.add(squares.getChildren().get(i).getText());
                     }
-
+                    break;
                 }
             }
 
@@ -178,9 +183,9 @@ public class EditResources {
         try {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
-            Element things = rootNode.getChild("Things");
+            Element things = rootNode.getChild("things");
 
-            Iterator<Element> c = things.getDescendants(new ElementFilter("Pos"));
+            Iterator<Element> c = things.getDescendants(new ElementFilter("pos"));
             String data = "";
             int i = 0;
 
@@ -191,11 +196,11 @@ public class EditResources {
                     Element eP = e.getParentElement();
                     if(eP.hasAttributes()) {
                         if(eP.getAttributeValue("Class").equalsIgnoreCase("ThingResource")) {
-                            if(eP.getChildText("Def") == null || eP.getChildText("StackCount") == null) {
+                            if(eP.getChildText("def") == null || eP.getChildText("stackCount") == null) {
                                 continue;
                             }
-                            data = data + e.getParentElement().getChildText("Def") + "(" + i + ")" + ":"
-                                    + e.getParentElement().getChildText("StackCount") + ":" + e.getText() + "#";
+                            data = data + e.getParentElement().getChildText("def") + "(" + i + ")" + ":"
+                                    + e.getParentElement().getChildText("stackCount") + ":" + e.getText() + "#";
                             i++;
                             continue;
                         }

@@ -1,6 +1,8 @@
 package me.keensta.UI;
 
 import java.awt.Color;
+import java.awt.Rectangle;
+
 import com.alee.extended.painter.DashedBorderPainter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
@@ -81,12 +83,18 @@ public class Resources {
         stockpileList.addActionListener(sl);
         resourcesList.addActionListener(rl);
         setAll.addActionListener(asl);
-        
-        app.revalidate();
     }
 
     public void updateComponents() {
+        //This is the only current fix I have for not loading new stockpilelist..
+        //If anyone has better please tell..
+        Rectangle r = stockpileList.getBounds();
+        app.remove(stockpileList);
+        stockpileList = new WebComboBox(app.getEditResources().getStockpileList().toArray());
+        app.add(stockpileList);
+        stockpileList.setBounds(r);
         
+        resourcesList = new WebComboBox();
     }
     
     @SuppressWarnings("unchecked")

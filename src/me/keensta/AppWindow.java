@@ -12,8 +12,10 @@ import me.keensta.UI.Menu;
 import me.keensta.UI.PawnEditting;
 import me.keensta.UI.Resources;
 import me.keensta.UI.World;
+import me.keensta.file.Backup;
+import me.keensta.file.ErrorLog;
+import me.keensta.file.ModLoader;
 import me.keensta.util.AppPosition;
-import me.keensta.util.Backup;
 import me.keensta.util.Image;
 import me.keensta.xmleditting.ClearBlood;
 import me.keensta.xmleditting.ClearCorpses;
@@ -51,7 +53,13 @@ public class AppWindow extends JPanel {
     private Resources res;
     private World world;
     private PawnEditting pawnEdit;
+    
+    //File Classes
     private Backup bk;
+    @SuppressWarnings("unused")
+    private ErrorLog el;
+    @SuppressWarnings("unused")
+    private ModLoader ml;
     
     //Editing classes
     private ClearBlood cb;
@@ -66,6 +74,7 @@ public class AppWindow extends JPanel {
     // Xml Stuff
     private SAXBuilder builder = new SAXBuilder();
     private File xmlFile;
+    private File modsFile;
     private DataHandler dataHandler;
 
     public static void main(String[] args) {
@@ -93,6 +102,7 @@ public class AppWindow extends JPanel {
 
         // Load Needed Classes
         menu = new Menu(this);
+        el = new ErrorLog();
 
         // BuildComponents
         menuVar = menu.createMenu(menuVar);
@@ -125,6 +135,8 @@ public class AppWindow extends JPanel {
 
     public void makeVisible(int i) {
         menu.save.setEnabled(true);
+        menu.backup.setEnabled(true);
+        menu.restore.setEnabled(true);
         
         if(i == 0) {
             gameInfo = new GameInfo(this);
@@ -137,32 +149,37 @@ public class AppWindow extends JPanel {
             world.BuildComponents();
             pawnEdit.BuildComponents();
         } else {
+            gameInfo.updateComponents();
             res.updateComponents();
         }
         
     }
     
     // Following code doesn't directly effect Gui.
-    public void setXmlFile(File file) {
+    public void setFiles(File file, File modsFile) {
         xmlFile = file;
-
-        menu.saveFileDir.setText(file.getAbsolutePath());
-        dataHandler = new DataHandler(this, xmlFile, builder);
-        bk = new Backup();
-        bk.setBackupFile(xmlFile);
+        this.modsFile = modsFile;
         
-        bk.createBackup();
+        menu.saveFileDir.setText(file.getAbsolutePath());
+        
+        dataHandler = new DataHandler(this, xmlFile, this.modsFile, builder);
+        bk = new Backup(this);
+        ml = new ModLoader(this);
+        
+        bk.setBackupFile(xmlFile);
+        ml.displayLoadedMods();
+        
         intilizeClasses();
     }
 
     private void intilizeClasses() {
         cc = new ClearCorpses(xmlFile, builder, this);
-        cw = new ClearWeapons(xmlFile, builder);
-        cr = new ConvertRaiders(xmlFile, builder);
-        draid = new DeleteRaiders(xmlFile, builder);
-        dr = new DeleteRubbish(xmlFile, builder);
-        er = new EditResources(xmlFile, builder);
-        sg = new SpawnGeyser(xmlFile, builder);
+        cw = new ClearWeapons(xmlFile, builder, this);
+        cr = new ConvertRaiders(xmlFile, builder, this);
+        draid = new DeleteRaiders(xmlFile, builder, this);
+        dr = new DeleteRubbish(xmlFile, builder, this);
+        er = new EditResources(xmlFile, builder, this);
+        sg = new SpawnGeyser(xmlFile, builder, this);
     }
 
     public JFrame getFrame() {
@@ -172,9 +189,21 @@ public class AppWindow extends JPanel {
     public SAXBuilder getBuilder() {
         return builder;
     }
+    
+    public void setFile(File xmlFile) {
+        this.xmlFile = xmlFile;
+    }
 
     public File getFile() {
         return xmlFile;
+    }
+    
+    public File getModFile() {
+        return modsFile;
+    }
+    
+    public Backup getBackupHandler() {
+        return bk;
     }
 
     public DataHandler getDataHandler() {
