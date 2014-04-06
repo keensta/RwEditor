@@ -29,7 +29,6 @@ import me.keensta.actionlisteners.pawn.SavePawnListener;
 import me.keensta.colonists.ColonistWindow;
 import me.keensta.colonists.Pawn;
 import me.keensta.colonists.enums.Skill;
-import me.keensta.colonists.enums.Weapon;
 
 public class ColonistView {
 
@@ -272,11 +271,7 @@ public class ColonistView {
     }
     
     private void setUpWeapons() {
-        String[] weaponNames = new String[11];
-        for(int i = 0; i < Weapon.values().length; i++) {
-            weaponNames[i] = Weapon.values()[i].getName();
-        }
-        fieldWeapon = new WebComboBox(weaponNames);
+        fieldWeapon = new WebComboBox(app.getWeaponHandler().getWeaponNames());
     }
     
     public void updateCompnents(Pawn p) {
@@ -290,7 +285,7 @@ public class ColonistView {
         fieldFear.setText(Double.toString(p.getFear()));
         fieldFood.setText(Double.toString(p.getFood()));
         fieldRest.setText(Double.toString(p.getRest()));
-        fieldWeapon.setSelectedItem(p.getCurrentWeapon().getName());
+        fieldWeapon.setSelectedItem(p.getCurrentWeapon().getGunName());
         
         constructionField.setValue(p.getSkillValue(Skill.CONSTRUCTION));
         growingField.setValue(p.getSkillValue(Skill.GROWING));

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import me.keensta.AppWindow;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -17,14 +15,12 @@ import org.jdom2.input.SAXBuilder;
 
 public class DataHandler {
 
-    private AppWindow app;
     private File file;
     private SAXBuilder builder;
 
     private File[] files;
     
-    public DataHandler(AppWindow app, File xmlFile, File loadedMods, SAXBuilder builder) {
-        this.app = app;
+    public DataHandler(File xmlFile, File loadedMods, SAXBuilder builder) {
         this.builder = builder;
         
         this.files = new File[] {xmlFile, loadedMods};

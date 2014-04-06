@@ -12,9 +12,11 @@ import me.keensta.UI.Menu;
 import me.keensta.UI.PawnEditting;
 import me.keensta.UI.Resources;
 import me.keensta.UI.World;
+import me.keensta.colonists.WeaponHandler;
 import me.keensta.file.Backup;
 import me.keensta.file.ErrorLog;
 import me.keensta.file.ModLoader;
+import me.keensta.file.Pref;
 import me.keensta.util.AppPosition;
 import me.keensta.util.Image;
 import me.keensta.xmleditting.ClearBlood;
@@ -60,6 +62,7 @@ public class AppWindow extends JPanel {
     private ErrorLog el;
     @SuppressWarnings("unused")
     private ModLoader ml;
+    private Pref pref;
     
     //Editing classes
     private ClearBlood cb;
@@ -70,6 +73,7 @@ public class AppWindow extends JPanel {
     private DeleteRubbish dr;
     private EditResources er;
     private SpawnGeyser sg;
+    private WeaponHandler wh;
     
     // Xml Stuff
     private SAXBuilder builder = new SAXBuilder();
@@ -102,10 +106,13 @@ public class AppWindow extends JPanel {
 
         // Load Needed Classes
         menu = new Menu(this);
+        pref = new Pref(builder);
         el = new ErrorLog();
+        wh = new WeaponHandler();
 
         // BuildComponents
         menuVar = menu.createMenu(menuVar);
+        pref.loadData();
 
         // Adjust size and set layout and make border
         setPreferredSize(new Dimension(580, 310));
@@ -136,7 +143,7 @@ public class AppWindow extends JPanel {
     public void makeVisible(int i) {
         menu.save.setEnabled(true);
         menu.backup.setEnabled(true);
-        menu.restore.setEnabled(true);
+        //menu.restore.setEnabled(true);
         
         if(i == 0) {
             gameInfo = new GameInfo(this);
@@ -162,12 +169,11 @@ public class AppWindow extends JPanel {
         
         menu.saveFileDir.setText(file.getAbsolutePath());
         
-        dataHandler = new DataHandler(this, xmlFile, this.modsFile, builder);
+        dataHandler = new DataHandler(xmlFile, this.modsFile, builder);
         bk = new Backup(this);
-        ml = new ModLoader(this);
+        ml = new ModLoader(this, builder);
         
         bk.setBackupFile(xmlFile);
-        ml.displayLoadedMods();
         
         intilizeClasses();
     }
@@ -200,6 +206,14 @@ public class AppWindow extends JPanel {
     
     public File getModFile() {
         return modsFile;
+    }
+    
+    public Pref getPref() {
+        return pref;
+    }
+    
+    public WeaponHandler getWeaponHandler() {
+        return wh;
     }
     
     public Backup getBackupHandler() {

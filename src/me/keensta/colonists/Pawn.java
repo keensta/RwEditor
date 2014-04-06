@@ -12,7 +12,6 @@ import me.keensta.AppWindow;
 import me.keensta.UI.ColonistView;
 import me.keensta.colonists.enums.Skill;
 import me.keensta.colonists.enums.Trait;
-import me.keensta.colonists.enums.Weapon;
 import me.keensta.util.Notification;
 
 import org.jdom2.Attribute;
@@ -39,7 +38,7 @@ public class Pawn {
     private String age = "19";
     private String health = "100";
     private String sex = "----";
-    private Weapon currentWeapon = Weapon.NOGUN;
+    private Weapon currentWeapon;
     // Psychology vars BEGIN
     private double loyalty;
     private double happiness;
@@ -51,23 +50,10 @@ public class Pawn {
     private HashMap<Skill, String> skills = new HashMap<Skill, String>();
 
     public Pawn(Element pawnE, ColonistView cv, AppWindow app) {
-        setupClass(pawnE);
         this.cv = cv;
         this.app = app;
-    }
-
-    public Pawn(String pawnName) {
-        this.name = pawnName;
-        this.id = pawnName;
-
-        this.age = "20";
-        this.health = "100";
-        this.sex = "male";
-        this.currentWeapon = Weapon.LEEENFIELD;
-
-        this.loyalty = 100;
-        this.happiness = 100;
-        this.fear = 100;
+        
+        setupClass(pawnE);
     }
 
     private void setupClass(Element e) {
@@ -116,7 +102,7 @@ public class Pawn {
 
         if(p.hasAttributes()) {
             if(p.getAttributeValue("IsNull").equalsIgnoreCase("True")) {
-                return Weapon.NOGUN;
+                return getWeapon("isNull");
             } else {
                 return getWeapon(p.getChildText("def"));
             }
@@ -125,12 +111,7 @@ public class Pawn {
     }
 
     private Weapon getWeapon(String weaponCode) {
-        for(Weapon w : Weapon.values()) {
-            if(weaponCode.equalsIgnoreCase(w.getWeaponCode()))
-                return w;
-        }
-
-        return Weapon.NOGUN;
+       return app.getWeaponHandler().getWeaponByTag(weaponCode);
     }
 
     // Setters and Getters
@@ -305,7 +286,7 @@ public class Pawn {
                                 p.setFear(Double.parseDouble(cv.getFear()));
                                 p.setFood(Double.parseDouble(cv.getFood()));
                                 p.setRest(Double.parseDouble(cv.getRest()));
-                                p.setCurrentWeapon(Weapon.valueOf(cv.getWeapon().replace("-", "").replaceAll(" ", "").toUpperCase()));
+                                p.setCurrentWeapon(app.getWeaponHandler().getWeaponByTag(cv.getWeapon()));
                             }
                         }
                     }
@@ -330,7 +311,9 @@ public class Pawn {
     }
 
     private void saveSkills(Element ep) {
-        Element e = ep.getChild("skills");
+        Element s = ep.getChild("skills");
+        Element s2 = s.getChild("skills");
+        Iterator<Element> skillRecord = s2.getDescendants(new ElementFilter("li"));
         
         skills.put(Skill.CONSTRUCTION, cv.getConstructionLevel());
         skills.put(Skill.GROWING, cv.getGrowingLevel());
@@ -344,8 +327,12 @@ public class Pawn {
         skills.put(Skill.ARTISTIC, cv.getArtisticLevel());
         skills.put(Skill.CRAFTING, cv.getCraftingLevel());
         
-        for(Skill s : Skill.values()) {
-            e.getChild(s.getTag()).setText(skills.get(s));
+        while(skillRecord.hasNext()) {
+            Element skill = skillRecord.next();
+            Element skillDef = skill.getChild("def");
+            
+            
+            skill.getChild("level").setText(skills.get(Skill.valueOf(skillDef.getText().toUpperCase())));
         }
     }
 
@@ -381,11 +368,7 @@ public class Pawn {
     }
 
     private String determineWeapon(String weapon) {
-        for(Weapon w : Weapon.values()) {
-            if(w.getName().equalsIgnoreCase(weapon))
-                return w.getWeaponCode();
-        }
-        return Weapon.NOGUN.getWeaponCode();
+        return app.getWeaponHandler().getWeaponByName(weapon).getTagName();
     }
 
 }

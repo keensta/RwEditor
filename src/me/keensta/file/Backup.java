@@ -19,7 +19,7 @@ public class Backup {
     
     public void createBackup() {
         try {
-            File targetDir = new File("//Backup");
+            File targetDir = new File("\\Backup");
             
             if(!targetDir.exists())
                 targetDir.mkdir();
