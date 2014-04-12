@@ -83,7 +83,7 @@ public class AppWindow extends JPanel {
 
     public static void main(String[] args) {
         try {
-            // Setting up WebLookAndFeel style
+            // Setting up WebLookAndFeel style : http://weblookandfeel.com/
             UIManager.setLookAndFeel(WebLookAndFeel.class.getCanonicalName());
         } catch(Throwable e) {
             e.printStackTrace();

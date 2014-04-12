@@ -10,7 +10,6 @@ import com.alee.laf.rootpane.WebFrame;
 import me.keensta.AppWindow;
 import me.keensta.UI.ColonistView;
 
-@SuppressWarnings("unused")
 public class ColonistWindow extends JPanel {
 
     private static final long serialVersionUID = 2L;
@@ -23,7 +22,7 @@ public class ColonistWindow extends JPanel {
         setLayout(null);
 
         this.app = app;
-        cv = new ColonistView(app, this);
+        cv = new ColonistView(this.app, this);
         
         cv.createWindow();
     }
