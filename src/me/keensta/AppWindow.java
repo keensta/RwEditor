@@ -113,7 +113,8 @@ public class AppWindow extends JPanel {
         // BuildComponents
         menuVar = menu.createMenu(menuVar);
         pref.loadData();
-
+        pref.checkDirectory();
+        
         // Adjust size and set layout and make border
         setPreferredSize(new Dimension(580, 310));
         setLayout(null);
@@ -266,5 +267,9 @@ public class AppWindow extends JPanel {
 
     public void setSpawnGeyser(SpawnGeyser sg) {
         this.sg = sg;
+    }
+    
+    public GameInfo getGameInfo() {
+        return gameInfo;
     }
 }

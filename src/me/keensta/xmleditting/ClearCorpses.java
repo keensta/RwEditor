@@ -1,7 +1,7 @@
 package me.keensta.xmleditting;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,12 +61,12 @@ public class ClearCorpses {
             Notification.createInfoNotification("Blood & Corpse(s) removed", 3000);
 
             XMLOutputter xmlOutput = new XMLOutputter();
-            FileWriter fw = new FileWriter(cb.getXmlFile());
+            FileOutputStream fos = new FileOutputStream(xmlFile);
 
-            xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(doc, fw);
+            xmlOutput.setFormat(Format.getRawFormat());
+            xmlOutput.output(doc, fos);
 
-            fw.close();
+            fos.close();
             
             app.setFile(xmlFile);
             

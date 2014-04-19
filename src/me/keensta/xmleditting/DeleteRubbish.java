@@ -81,9 +81,10 @@ public class DeleteRubbish {
             XMLOutputter xmlOutput = new XMLOutputter();
             FileWriter fw = new FileWriter(xmlFile);
 
-            xmlOutput.setFormat(Format.getPrettyFormat());
+            xmlOutput.setFormat(Format.getRawFormat());
             xmlOutput.output(doc, fw);
 
+            fw.flush();
             fw.close();
             
             app.setFile(xmlFile);

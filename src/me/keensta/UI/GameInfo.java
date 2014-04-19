@@ -35,7 +35,6 @@ public class GameInfo {
         gameInfo.setShadeColor(new Color(140, 30, 185));
         
         sv.setEditable(false);
-        cn.setEditable(false);
         
         createBorder();
         app.add(gameInfo);
@@ -71,6 +70,10 @@ public class GameInfo {
         app.add(borderLabel);
 
         borderLabel.setBounds(AppPosition.GIBORDER_X, AppPosition.GIBORDER_Y, 520, 35);
+    }
+    
+    public WebTextField getColonyName() {
+        return cn;
     }
 
 }

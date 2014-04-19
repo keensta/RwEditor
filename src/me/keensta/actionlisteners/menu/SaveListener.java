@@ -2,12 +2,19 @@ package me.keensta.actionlisteners.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
+
 import me.keensta.AppWindow;
 import me.keensta.util.Notification;
 
 public class SaveListener implements ActionListener {
 
-    @SuppressWarnings("unused")
     private AppWindow app;
 
     public SaveListener(AppWindow app) {
@@ -16,21 +23,22 @@ public class SaveListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        /*try {
+        try {
             Document doc = app.getBuilder().build(app.getFile());
+            app.getDataHandler().setData("colonyInfo/colonyName", app.getGameInfo().getColonyName().getText(), app.getFile().getName());
 
-            FileWriter fw = new FileWriter(app.getFile());
             XMLOutputter xmlOutput = new XMLOutputter();
+            FileOutputStream fos = new FileOutputStream(app.getFile());
 
-            xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(doc, fw);
+            xmlOutput.setFormat(Format.getRawFormat());
+            xmlOutput.output(doc, fos);
 
-            fw.close();
+            fos.close();
 
         } catch(IOException | JDOMException e1) {
             e1.printStackTrace();
         }
-*/
+
         Notification.createInfoNotification("File Saved...", 5000);
     }
 }

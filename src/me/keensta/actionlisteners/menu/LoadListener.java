@@ -21,11 +21,10 @@ public class LoadListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Rimworld", "rim");
-        String systemName = System.getProperty("os.name");
         
         chooser.setDialogTitle("Choose RimWorld Save");
         chooser.setFileFilter(filter);
-        chooser.setCurrentDirectory(new File(getCurrentDirectory(systemName)));
+        chooser.setCurrentDirectory(new File(app.getPref().getRWDirectory().toString() + "//Saves//"));
 
         int returnVal = chooser.showOpenDialog(null);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
@@ -37,17 +36,11 @@ public class LoadListener implements ActionListener {
 
     private File getModsLoadedFile(File currentDirectory) {
         String newDir = currentDirectory.getAbsolutePath().replace("Saves", "");
-        File modsFile = new File(newDir + "ModsConfig.xml");
+        File modsFile = new File(newDir + "//Config//" + "ModsConfig.xml");
 
         return modsFile;
     }
 
-    private String getCurrentDirectory(String sn) {
-        if(sn.contains("Windows"))
-            return "C:\\Users\\" + System.getProperty("user.name") + "\\AppData\\LocalLow\\Ludeon Studios\\RimWorld\\Saves\\";
-        else if(sn.contains("OS X"))
-            return "//Users//" + System.getProperty("user.name") + "//Library//Caches//unity.Ludeon Studios.RimWorld//Saves//";
-        return "";
-    }
+
 
 }

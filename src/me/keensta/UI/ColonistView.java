@@ -309,7 +309,7 @@ public class ColonistView {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("kindDef"));
 
             while(c.hasNext()) {
                 Element e = c.next();

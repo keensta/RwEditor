@@ -1,7 +1,7 @@
 package me.keensta.xmleditting;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -62,12 +62,12 @@ public class EditResources {
             Notification.createInfoNotification("Updated resource stack size.", 3000);
             
             XMLOutputter xmlOutput = new XMLOutputter();
-            FileWriter fw = new FileWriter(xmlFile);
+            FileOutputStream fos = new FileOutputStream(xmlFile);
 
-            xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(doc, fw);
+            xmlOutput.setFormat(Format.getRawFormat());
+            xmlOutput.output(doc, fos);
 
-            fw.close();
+            fos.close();
             
             app.setFile(xmlFile);
             
@@ -103,12 +103,12 @@ public class EditResources {
             Notification.createInfoNotification("Updated all resources stack size to " + stackCount, 3000);
             
             XMLOutputter xmlOutput = new XMLOutputter();
-            FileWriter fw = new FileWriter(xmlFile);
+            FileOutputStream fos = new FileOutputStream(xmlFile);
 
-            xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(doc, fw);
+            xmlOutput.setFormat(Format.getRawFormat());
+            xmlOutput.output(doc, fos);
 
-            fw.close();
+            fos.close();
 
         } catch(IOException io) {
             io.printStackTrace();
