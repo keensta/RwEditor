@@ -52,7 +52,7 @@ public class EditResources {
                     Element eP = e.getParentElement();
                     if(eP.hasAttributes()) {
                         if(eP.getAttributeValue("Class").equalsIgnoreCase("ThingResource")) {
-                            eP.getChild("StackCount").setText(stackCount);
+                            eP.getChild("stackCount").setText(stackCount);
                             break;
                         }
                     }

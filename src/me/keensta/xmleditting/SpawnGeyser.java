@@ -48,18 +48,15 @@ public class SpawnGeyser {
             Element def = new Element("def");
             Element id = new Element("id");
             Element pos = new Element("pos");
-            Element rot = new Element("rot");
             
             thing.setAttribute(new Attribute("Class", "SteamGeyser"));
             def.setText("SteamGeyser");
             id.setText("SteamGeyser" + thingId);
             pos.setText(location);
-            rot.setText("1");
             
             thing.addContent(def);
             thing.addContent(id);
             thing.addContent(pos);
-            thing.addContent(rot);
             
             things.addContent(thing);
             app.getDataHandler().setData("mapInfo/maxThingIDIndex", Integer.toString(thingId), app.getFile().getName());

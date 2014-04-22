@@ -60,7 +60,10 @@ public class ModLoader {
                 File[] modFiles = modF.listFiles();
 
                 for(File modFile : modFiles) {
+                    
                     if(modFile.getName().contains(".xml") && modFile.isFile()) {
+                        System.out.println("Loading mod: " + modFile.getName());
+                        
                         loadFileData(modFile);
                     }
                 }
@@ -94,6 +97,8 @@ public class ModLoader {
                 }
 
             }
+            
+            System.out.println("Completed loading mod: " + modFile.getName());
 
         } catch(IOException io) {
             io.printStackTrace();

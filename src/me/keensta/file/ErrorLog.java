@@ -11,6 +11,7 @@ public class ErrorLog {
     public ErrorLog() {
         try {
             ps = new PrintStream(new File("RwEditor_Output.txt"));
+            System.setOut(ps);
             System.setErr(ps);
         } catch(FileNotFoundException e) {
             e.printStackTrace();

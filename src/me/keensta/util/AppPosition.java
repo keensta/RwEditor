@@ -42,7 +42,7 @@ public class AppPosition {
     public static int COPYRIGHT_X = 132, COPYRIGHT_Y = 23;
     public static int AUTHOR_X = 132, AUTHOR_Y = 46;
     public static int TESTERS_X = 132, TESTERS_Y = 69;
-    public static int IMG1_X = 0, IMG1_Y = 98;
+    public static int IMG1_X = 0, IMG1_Y = 0;
     public static int W1_X = 132, W1_y = 98;
     // AboutView UI END
     

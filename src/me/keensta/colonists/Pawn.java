@@ -1,6 +1,7 @@
 package me.keensta.colonists;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -215,7 +216,7 @@ public class Pawn {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("kindDef"));
 
             while(c.hasNext()) {
                 Element e = c.next();
@@ -236,12 +237,12 @@ public class Pawn {
             }
             
             XMLOutputter xmlOutput = new XMLOutputter();
-            FileWriter fw = new FileWriter(xmlFile);
+            FileOutputStream fos = new FileOutputStream(xmlFile);
 
             xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(doc, fw);
+            xmlOutput.output(doc, fos);
 
-            fw.close();
+            fos.close();
             
         } catch(IOException io) {
             io.printStackTrace();
@@ -257,7 +258,7 @@ public class Pawn {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("kindDef"));
 
             while(c.hasNext()) {
                 Element e = c.next();
@@ -296,12 +297,12 @@ public class Pawn {
             Notification.createInfoNotification("Colonist " + p.getName() + " changes have been saved", 4000);
             
             XMLOutputter xmlOutput = new XMLOutputter();
-            FileWriter fw = new FileWriter(xmlFile);
+            FileOutputStream fos = new FileOutputStream(xmlFile);
 
             xmlOutput.setFormat(Format.getPrettyFormat());
-            xmlOutput.output(doc, fw);
+            xmlOutput.output(doc, fos);
 
-            fw.close();
+            fos.close();
             
         } catch(IOException io) {
             io.printStackTrace();

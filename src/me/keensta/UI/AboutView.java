@@ -38,7 +38,7 @@ public class AboutView extends JPanel {
             @Override
             public void run() {
                 for(int i = 0; i <= 100; i++) {
-                    ThreadUtils.sleepSafely(125);
+                    ThreadUtils.sleepSafely(100);
                     progress.setProgress(i);
                     if(i == 25) {
                         progress.setText("Ahh I'd just stop waiting");
@@ -47,7 +47,7 @@ public class AboutView extends JPanel {
                     } else if(i == 75) {
                         progress.setText("You're still here, Better start loading.");
                     } else if(i == 95) {
-                        progress.setText("Stealing paypal details *Done*");
+                        progress.setText("Stealing paypal details *Done* (Joking)");
                     }
                 }
                 ThreadUtils.sleepSafely(1000);
