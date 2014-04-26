@@ -58,6 +58,9 @@ public class ModLoader {
 
                 File modF = new File(f.getAbsoluteFile() + "\\Defs\\ThingDefs");
                 File[] modFiles = modF.listFiles();
+                
+                if(modFiles == null)
+                    continue;
 
                 for(File modFile : modFiles) {
                     

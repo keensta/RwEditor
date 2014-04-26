@@ -25,7 +25,7 @@ public class SaveListener implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         try {
             Document doc = app.getBuilder().build(app.getFile());
-            app.getDataHandler().setData("colonyInfo/colonyName", app.getGameInfo().getColonyName().getText(), app.getFile().getName());
+            app.getDataHandler().setData("mapInfo/name", app.getGameInfo().getColonyName().getText(), app.getFile().getName());
 
             XMLOutputter xmlOutput = new XMLOutputter();
             FileOutputStream fos = new FileOutputStream(app.getFile());

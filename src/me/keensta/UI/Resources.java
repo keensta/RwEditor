@@ -93,8 +93,10 @@ public class Resources {
         stockpileList = new WebComboBox(app.getEditResources().getStockpileList().toArray());
         app.add(stockpileList);
         stockpileList.setBounds(r);
+        stockpileList.addActionListener(sl);
         
-        resourcesList = new WebComboBox();
+        resourcesList.removeAllItems();
+        setStackCount("");
     }
     
     @SuppressWarnings("unchecked")

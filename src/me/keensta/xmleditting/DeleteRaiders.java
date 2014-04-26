@@ -37,13 +37,13 @@ public class DeleteRaiders {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("team"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("kindDef"));
             List<Element> markedToBeRemoved = new ArrayList<Element>();
 
             while(c.hasNext()) {
                 Element e = c.next();
 
-                if(e.getValue().equalsIgnoreCase("Raider")) {
+                if(e.getValue().equalsIgnoreCase("Pirate") || e.getValue().contains("Tribal")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         markedToBeRemoved.add(e.getParentElement());
                     }

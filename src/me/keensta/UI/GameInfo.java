@@ -28,7 +28,7 @@ public class GameInfo {
 
     public void BuildComponents() {
 
-        cn = new WebTextField(app.getDataHandler().getDataString("colonyInfo/colonyName", app.getFile().getName()));
+        cn = new WebTextField(app.getDataHandler().getDataString("mapInfo/name", app.getFile().getName()));
         sv = new WebTextField(app.getDataHandler().getDataString("gameVersion", app.getFile().getName()));
 
         gameInfo.setDrawShade(true);
@@ -53,8 +53,8 @@ public class GameInfo {
     }
     
     public void updateComponents() {
-        cn.setText(app.getDataHandler().getDataString("ColonyInfo/ColonyName", app.getFile().getName()));
-        sv.setText(app.getDataHandler().getDataString("GameVersion", app.getFile().getName()));
+        cn.setText(app.getDataHandler().getDataString("mapInfo/name", app.getFile().getName()));
+        sv.setText(app.getDataHandler().getDataString("gameVersion", app.getFile().getName()));
         
         app.revalidate();
     }

@@ -57,6 +57,8 @@ public class PawnEditting {
         RRButton.addActionListener(rrl);
         CRButton.addActionListener(crl);
         CEButton.addActionListener(cel);
+    
+        CRButton.setEnabled(false);
     }
 
     @SuppressWarnings("rawtypes")

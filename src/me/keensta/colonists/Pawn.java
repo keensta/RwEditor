@@ -341,7 +341,7 @@ public class Pawn {
         String weapon = cv.getWeapon();
         String weaponCode = determineWeapon(weapon);
         
-        if(weaponCode.length() == 0) {
+        if(weaponCode.length() == 0 || weaponCode.equalsIgnoreCase("isNull")) {
             Element equipment = ep.getChild("equipment");
             equipment.removeContent(equipment.getChild("primary"));
             
@@ -355,13 +355,16 @@ public class Pawn {
             Element def = new Element("def");
             Element id = new Element("id");
             Element health = new Element("health");
+            Element faction = new Element ("faction");
             
             def.setText(weaponCode);
             id.setText(weaponCode+"0");
             health.setText("100");
+            faction.setText("Colony");
             prim.addContent(def);
             prim.addContent(id);
             prim.addContent(health);
+            prim.addContent(faction);
             
             equipment.removeContent(equipment.getChild("primary"));
             equipment.addContent(prim);
