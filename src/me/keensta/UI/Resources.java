@@ -15,6 +15,7 @@ import me.keensta.actionlisteners.resources.RSelectionListener;
 import me.keensta.actionlisteners.resources.SSelectionListener;
 import me.keensta.actionlisteners.resources.SetAllListener;
 import me.keensta.actionlisteners.resources.UpdateListener;
+import me.keensta.util.AppPosition;
 
 public class Resources {
 
@@ -68,16 +69,16 @@ public class Resources {
         app.add(setAll);
         app.add(update);
         
-        resourcesTitle.setBounds(40, 120, 80, 25);
-        stockpiles.setBounds(42, 140, 80, 25);
-        stockpileList.setBounds(40, 160, 130, 25);
-        resources.setBounds(192, 140, 80, 25);
-        resourcesList.setBounds(190, 160, 130, 25);
-        stackCount.setBounds(342, 140, 80, 25);
-        fieldStackCount.setBounds(340, 160, 80, 25);
-        setAllSpinner.setBounds(190, 195, 75, 25);
-        setAll.setBounds(265, 195, 55, 25);
-        update.setBounds(340, 195, 80, 25);
+        resourcesTitle.setBounds(AppPosition.RESOURCETITLE_X, AppPosition.RESOURCETITLE_Y, 80, 25);
+        stockpiles.setBounds(AppPosition.STOCKPILES_X, AppPosition.STOCKPILES_Y, 80, 25);
+        stockpileList.setBounds(AppPosition.STOCKPILELIST_X, AppPosition.STOCKPILELIST_Y, 130, 25);
+        resources.setBounds(AppPosition.RESOURCES_X, AppPosition.RESOURCES_Y, 80, 25);
+        resourcesList.setBounds(AppPosition.RESOURCESLIST_X, AppPosition.RESOURCESLIST_Y, 130, 25);
+        stackCount.setBounds(AppPosition.STACKCOUNT_X, AppPosition.STACKCOUNT_Y, 80, 25);
+        fieldStackCount.setBounds(AppPosition.FIELDSTACKCOUNT_X, AppPosition.FIELDSTACKCOUNT_Y, 80, 25);
+        setAllSpinner.setBounds(AppPosition.SETALLSPINNER_X, AppPosition.SETALLSPINNER_Y, 75, 25);
+        setAll.setBounds(AppPosition.SETALL_X, AppPosition.SETALL_Y, 55, 25);
+        update.setBounds(AppPosition.UPDATE_X, AppPosition.UPDATE_Y, 80, 25);
         
         update.addActionListener(ul);
         stockpileList.addActionListener(sl);
@@ -127,7 +128,7 @@ public class Resources {
 
         app.add(borderLabel);
 
-        borderLabel.setBounds(35, 140, 390, 85);
+        borderLabel.setBounds(AppPosition.RBORDER_X, AppPosition.RBORDER_Y, 390, 85);
     }
     
     public WebComboBox getStockpileList() {
