@@ -216,12 +216,12 @@ public class Pawn {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("kindDef"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("faction"));
 
             while(c.hasNext()) {
                 Element e = c.next();
 
-                if(e.getValue().equalsIgnoreCase("Colonist")) {
+                if(e.getValue().equalsIgnoreCase("Colony")) {
                     Element ep = e.getParentElement();
                     if(ep.getName().equalsIgnoreCase("thing")) {
                         if(ep.getAttributeValue("Class").equalsIgnoreCase("Pawn")) {
@@ -258,12 +258,12 @@ public class Pawn {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("kindDef"));
+            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("faction"));
 
             while(c.hasNext()) {
                 Element e = c.next();
 
-                if(e.getValue().equalsIgnoreCase("Colonist")) {
+                if(e.getValue().equalsIgnoreCase("Colony")) {
                     Element ep = e.getParentElement();
                     if(ep.getName().equalsIgnoreCase("thing")) {
                         if(ep.getAttributeValue("Class").equalsIgnoreCase("Pawn")) {
@@ -332,6 +332,8 @@ public class Pawn {
             Element skill = skillRecord.next();
             Element skillDef = skill.getChild("def");
             
+            if(skill.getChild("level") == null)
+                continue;
             
             skill.getChild("level").setText(skills.get(Skill.valueOf(skillDef.getText().toUpperCase())));
         }
@@ -350,6 +352,7 @@ public class Pawn {
             primary.setAttribute(new Attribute("IsNull", "True"));
             equipment.addContent(primary);
         } else {
+            int thingId = app.getDataHandler().getDataInt("mapInfo/maxThingIDIndex", app.getFile().getName()) + 1;
             Element equipment = ep.getChild("equipment");
             Element prim = new Element("primary");
             Element def = new Element("def");
@@ -358,7 +361,7 @@ public class Pawn {
             Element faction = new Element ("faction");
             
             def.setText(weaponCode);
-            id.setText(weaponCode+"0");
+            id.setText(weaponCode+thingId);
             health.setText("100");
             faction.setText("Colony");
             prim.addContent(def);
@@ -368,6 +371,7 @@ public class Pawn {
             
             equipment.removeContent(equipment.getChild("primary"));
             equipment.addContent(prim);
+            app.getDataHandler().setData("mapInfo/maxThingIDIndex", Integer.toString(thingId), app.getFile().getName());
         }
     }
 

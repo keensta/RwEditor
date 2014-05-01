@@ -308,13 +308,14 @@ public class ColonistView {
         try {
             Document doc = builder.build(xmlFile);
             Element rootNode = doc.getRootElement();
+            Element things = rootNode.getChild("things");
 
-            Iterator<Element> c = rootNode.getDescendants(new ElementFilter("kindDef"));
+            Iterator<Element> c = things.getDescendants(new ElementFilter("faction"));
 
             while(c.hasNext()) {
                 Element e = c.next();
 
-                if(e.getValue().equalsIgnoreCase("Colonist")) {
+                if(e.getValue().equalsIgnoreCase("Colony")) {
                     if(e.getParentElement().getName().equalsIgnoreCase("thing")) {
                         if(e.getParentElement().getAttributeValue("Class").equalsIgnoreCase("Pawn"))
                         pawns.add(new Pawn(e.getParentElement(), this, app));

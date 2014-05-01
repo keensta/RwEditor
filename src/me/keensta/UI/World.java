@@ -10,6 +10,7 @@ import me.keensta.AppWindow;
 import me.keensta.actionlisteners.world.CCorpseListener;
 import me.keensta.actionlisteners.world.DRubbishListener;
 import me.keensta.actionlisteners.world.SGeyserListener;
+import me.keensta.util.AppPosition;
 
 public class World {
     
@@ -49,10 +50,10 @@ public class World {
         app.add(CRButton);
         app.add(SGButton);
         
-        world.setBounds(40, 225, 80, 25);
-        CCButton.setBounds(40, 250, 90, 25);
-        CRButton.setBounds(130, 250, 90, 25);
-        SGButton.setBounds(40, 275, 100, 25);
+        world.setBounds(AppPosition.WORLD_X, AppPosition.WORLD_Y, 80, 25);
+        CCButton.setBounds(AppPosition.CLEARCORPSES_X, AppPosition.CLEARCORPSES_Y, 90, 25);
+        CRButton.setBounds(AppPosition.CLEARRUBBISH_X, AppPosition.CLEARRUBBISH_Y, 90, 25);
+        SGButton.setBounds(AppPosition.SPAWNGEYSER_X, AppPosition.SPAWNGEYSER_Y, 100, 25);
         
         CCButton.addActionListener(ccl);
         CRButton.addActionListener(drl);
@@ -69,7 +70,7 @@ public class World {
 
         app.add(borderLabel);
 
-        borderLabel.setBounds(35, 245, 190, 60);
+        borderLabel.setBounds(AppPosition.WBORDER_X, AppPosition.WBORDER_Y, 190, 60);
     }
 
 }
