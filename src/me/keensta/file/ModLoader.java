@@ -51,11 +51,13 @@ public class ModLoader {
 
     public void loadModData() {
         File[] files = ModDirectory.listFiles();
+        System.out.println("MOD LOADING DATA START");
         
         for(File f : files) {
 
             if(modsActive.contains(f.getName())) {
-
+               System.out.println("Loading mod: " + f.getName());
+                
                 File modF = new File(f.getAbsoluteFile() + "\\Defs\\ThingDefs");
                 File[] modFiles = modF.listFiles();
                 
@@ -65,15 +67,16 @@ public class ModLoader {
                 for(File modFile : modFiles) {
                     
                     if(modFile.getName().contains(".xml") && modFile.isFile()) {
-                        System.out.println("Loading mod: " + modFile.getName());
-                        
                         loadFileData(modFile);
                     }
                 }
-
+                
+                System.out.println("Completed loading mod: " + f.getName());
             }
 
         }
+        
+        System.out.println("MOD LOADING DATA END" + System.getProperty("line.separator"));
     }
 
     private void loadFileData(File modFile) {
@@ -100,8 +103,6 @@ public class ModLoader {
                 }
 
             }
-            
-            System.out.println("Completed loading mod: " + modFile.getName());
 
         } catch(IOException io) {
             io.printStackTrace();

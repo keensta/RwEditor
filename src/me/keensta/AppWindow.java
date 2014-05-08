@@ -12,6 +12,7 @@ import me.keensta.UI.Menu;
 import me.keensta.UI.PawnEditting;
 import me.keensta.UI.Resources;
 import me.keensta.UI.World;
+import me.keensta.colonists.Traits;
 import me.keensta.colonists.WeaponHandler;
 import me.keensta.file.Backup;
 import me.keensta.file.ErrorLog;
@@ -63,6 +64,7 @@ public class AppWindow extends JPanel {
     @SuppressWarnings("unused")
     private ModLoader ml;
     private Pref pref;
+    private Traits traits;
     
     //Editing classes
     private ClearBlood cb;
@@ -173,6 +175,7 @@ public class AppWindow extends JPanel {
         dataHandler = new DataHandler(xmlFile, this.modsFile, builder);
         bk = new Backup(this);
         ml = new ModLoader(this, builder);
+        traits = new Traits();
         
         bk.setBackupFile(xmlFile);
         
@@ -211,6 +214,10 @@ public class AppWindow extends JPanel {
     
     public Pref getPref() {
         return pref;
+    }
+    
+    public Traits getTraits() {
+        return traits;
     }
     
     public WeaponHandler getWeaponHandler() {

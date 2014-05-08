@@ -12,7 +12,6 @@ import java.util.List;
 import me.keensta.AppWindow;
 import me.keensta.UI.ColonistView;
 import me.keensta.colonists.enums.Skill;
-import me.keensta.colonists.enums.Trait;
 import me.keensta.util.Notification;
 
 import org.jdom2.Attribute;
@@ -47,7 +46,9 @@ public class Pawn {
     private double food;
     private double rest;
     // Psychology Vars END
-    private List<Trait> traits = new ArrayList<Trait>();
+    private String trait1;
+    private String trait2;
+    
     private HashMap<Skill, String> skills = new HashMap<Skill, String>();
 
     public Pawn(Element pawnE, ColonistView cv, AppWindow app) {
@@ -73,23 +74,7 @@ public class Pawn {
         setRest(Double.parseDouble(e.getChild("rest").getChild("pieceRest").getChildText("curLevel")));
         
         getSkills(e);
-    }
-
-    private void getSkills(Element e) {
-        Element s = e.getChild("skills");
-        Element s2 = s.getChild("skills");
-        Iterator<Element> skills = s2.getDescendants(new ElementFilter("li"));
-        
-        while(skills.hasNext()) {
-            Element skill = skills.next();
-            Element skillDef = skill.getChild("def");
-            String skillLevel = skill.getChildText("level");
-            
-            if(skillLevel == null)
-                skillLevel = "0";
-            
-            this.skills.put(Skill.valueOf(skillDef.getText().toUpperCase()), skillLevel);
-        }
+        getTraits(e);
     }
 
     private String determinSex(Element e) {
@@ -113,6 +98,40 @@ public class Pawn {
 
     private Weapon getWeapon(String weaponCode) {
        return app.getWeaponHandler().getWeaponByTag(weaponCode);
+    }
+    
+    private void getSkills(Element e) {
+        Element s = e.getChild("skills");
+        Element s2 = s.getChild("skills");
+        Iterator<Element> skills = s2.getDescendants(new ElementFilter("li"));
+        
+        while(skills.hasNext()) {
+            Element skill = skills.next();
+            Element skillDef = skill.getChild("def");
+            String skillLevel = skill.getChildText("level");
+            
+            if(skillLevel == null)
+                skillLevel = "0";
+            
+            this.skills.put(Skill.valueOf(skillDef.getText().toUpperCase()), skillLevel);
+        }
+    }
+    
+    private void getTraits(Element e) {
+        Element allTraits = e.getChild("story").getChild("traits").getChild("allTraits");
+        Iterator<Element> traits = allTraits.getDescendants(new ElementFilter("li"));
+        
+        int i = 0;
+        while(traits.hasNext()) {
+            Element trait = traits.next();
+            i++;
+            
+            if(i == 1) {
+                trait1 = trait.getChildText("defName");
+            } else {
+                trait2 = trait.getChildText("defName");
+            }
+        }
     }
 
     // Setters and Getters
@@ -205,6 +224,14 @@ public class Pawn {
         this.rest = rest;
     }
     
+    public String getTrait1() {
+        return trait1;
+    }
+    
+    public String getTrait2() {
+        return trait2;
+    }
+    
     public int getSkillValue(Skill s) {
         return Integer.parseInt(this.skills.get(s));
     }
@@ -278,6 +305,7 @@ public class Pawn {
                                 ep.getChild("rest").getChild("pieceRest").getChild("curLevel").setText(cv.getRest());
                                 setWeapon(ep);
                                 saveSkills(ep); //Updates Pawns Values as it saves..
+                                saveTraits(ep);
                                 
                                 //Update Pawn
                                 p.setAge(cv.getAge());
@@ -308,6 +336,26 @@ public class Pawn {
             io.printStackTrace();
         } catch(JDOMException e) {
             e.printStackTrace();
+        }
+    }
+    
+    private void saveTraits(Element ep) {
+        Element allTraits = ep.getChild("story").getChild("traits").getChild("allTraits");
+        Iterator<Element> traits = allTraits.getDescendants(new ElementFilter("li"));
+        
+        trait1 = cv.getTrait1();
+        trait2 = cv.getTrait2();
+        
+        int i = 0;
+        while(traits.hasNext()) {
+            Element trait = traits.next();
+            i++;
+            
+            if(i == 1) {
+                trait.getChild("defName").setText(trait1);
+            } else {
+                trait.getChild("defName").setText(trait2);
+            }
         }
     }
 

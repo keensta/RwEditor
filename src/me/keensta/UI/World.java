@@ -40,9 +40,9 @@ public class World {
         world.setDrawShade(true);
         world.setShadeColor(new Color(30, 231, 43));
         
-        TooltipManager.addTooltip(CCButton, "Removes all Corpses, Including blood.");
-        TooltipManager.addTooltip(CRButton, "Removes all rubbish from the map, include slag and rock debris.");
-        TooltipManager.addTooltip(SGButton, "Converts any stockpiles called sg to SteamGeysers");
+        TooltipManager.addTooltip(CCButton, "Removes all Corpses, including blood.");
+        TooltipManager.addTooltip(CRButton, "Removes all rubbish from the map, including slag and rock debris.");
+        TooltipManager.addTooltip(SGButton, "Converts any stockpiles called SG to SteamGeysers");
         
         createBorder();
         app.add(world);
@@ -53,7 +53,7 @@ public class World {
         world.setBounds(AppPosition.WORLD_X, AppPosition.WORLD_Y, 80, 25);
         CCButton.setBounds(AppPosition.CLEARCORPSES_X, AppPosition.CLEARCORPSES_Y, 90, 25);
         CRButton.setBounds(AppPosition.CLEARRUBBISH_X, AppPosition.CLEARRUBBISH_Y, 90, 25);
-        SGButton.setBounds(AppPosition.SPAWNGEYSER_X, AppPosition.SPAWNGEYSER_Y, 100, 25);
+        SGButton.setBounds(AppPosition.SPAWNGEYSER_X, AppPosition.SPAWNGEYSER_Y, 95, 25);
         
         CCButton.addActionListener(ccl);
         CRButton.addActionListener(drl);

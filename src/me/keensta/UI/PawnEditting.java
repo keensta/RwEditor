@@ -22,7 +22,7 @@ public class PawnEditting {
     
     private WebButton RRButton = new WebButton("RemoveRaiders");
     private WebButton CRButton = new WebButton("ConvertRaiders");
-    private WebButton CEButton = new WebButton("Open ColonistEditor");
+    private WebButton CEButton = new WebButton("ColonistEditor");
     
     private RRaidersListener rrl;
     private CRaiderListener crl;
@@ -42,7 +42,7 @@ public class PawnEditting {
         
         TooltipManager.addTooltip(RRButton, "Clears map of all raiders");
         TooltipManager.addTooltip(CRButton, "Converts all raiders to colonists. This is unstable use at own risk");
-        TooltipManager.addTooltip(CEButton, "Not completed, minimal features implemented");
+        TooltipManager.addTooltip(CEButton, "Edit certain colonist attributes");
         
         createBorder();
         app.add(pawnEdit);
@@ -53,7 +53,7 @@ public class PawnEditting {
         pawnEdit.setBounds(AppPosition.PAWNEDIT_X, AppPosition.PAWNEDIT_Y, 80, 25);
         RRButton.setBounds(AppPosition.REMOVERAIDERS_X, AppPosition.REMOVERAIDERS_Y, 100, 25);
         CRButton.setBounds(AppPosition.CONVERTRAIDERS_X, AppPosition.CONVERTRAIDERS_Y, 100, 25);
-        CEButton.setBounds(AppPosition.COLONISTEDIT_X, AppPosition.COLONISTEDIT_Y, 140, 25);
+        CEButton.setBounds(AppPosition.COLONISTEDIT_X, AppPosition.COLONISTEDIT_Y, 100, 25);
         
         RRButton.addActionListener(rrl);
         CRButton.addActionListener(crl);

@@ -45,8 +45,8 @@ public class AppPosition {
     // World Edit
     public static int WBORDER_X = 35, WBORDER_Y = 245;
     public static int WORLD_X = 40, WORLD_Y = 225;
-    public static int CLEARCORPSES_X = 40, CLEARCORPSES_Y = 250;
-    public static int CLEARRUBBISH_X = 130, CLEARRUBBISH_Y = 250;
+    public static int CLEARCORPSES_X = 130, CLEARCORPSES_Y = 250;
+    public static int CLEARRUBBISH_X = 40, CLEARRUBBISH_Y = 250;
     public static int SPAWNGEYSER_X = 40, SPAWNGEYSER_Y = 275;
     // Main Components END
 

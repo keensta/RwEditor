@@ -66,6 +66,10 @@ public class ColonistView {
     private WebTextField fieldFood = new WebTextField();
     private WebLabel labelRest = new WebLabel("Rest");
     private WebTextField fieldRest = new WebTextField();
+    private WebLabel labelTrait1 = new WebLabel("Trait1");
+    private WebComboBox fieldTrait1;
+    private WebLabel labelTrait2 = new WebLabel("Trait2");
+    private WebComboBox fieldTrait2;
     private WebLabel labelWeapon = new WebLabel("Weapon");
     private WebComboBox fieldWeapon;
     
@@ -117,7 +121,7 @@ public class ColonistView {
         list = getPawns();
         sp = new JScrollPane(list);
         
-        setUpWeapons();
+        setupComboBoxes();
         
         colonistEditor.setFontSize(14);
         colonistEditor.setDrawShade(true);
@@ -155,8 +159,13 @@ public class ColonistView {
         cw.add(fieldFood);
         cw.add(labelRest);
         cw.add(fieldRest);
+        cw.add(labelTrait1);
+        cw.add(fieldTrait1);
+        cw.add(labelTrait2);
+        cw.add(fieldTrait2);
         cw.add(labelWeapon);
         cw.add(fieldWeapon);
+        
         cw.add(savePawn);
         cw.add(healAll);
         
@@ -165,26 +174,30 @@ public class ColonistView {
         sp.setBounds(5, 25, 150, 335);
         colonistInfo.setBounds(165, 0, 105, 25);
         
-        labelName.setBounds(170, 25, 45, 25);
-        fieldName.setBounds(225, 25, 130, 25);
-        labelId.setBounds(360, 25, 45, 25);
-        fieldId.setBounds(420, 25, 130, 25);
-        labelAge.setBounds(170, 60, 45, 25);
-        fieldAge.setBounds(225, 60, 130, 25);
-        labelSex.setBounds(360, 60, 45, 25);
-        fieldSex.setBounds(420, 60, 130, 25);
-        labelHealth.setBounds(170, 95, 45, 25);
-        fieldHealth.setBounds(225, 95, 130, 25);
-        labelHappiness.setBounds(360, 95, 55, 25);
-        fieldHappiness.setBounds(420, 95, 130, 25);
-        labelLoyalty.setBounds(170, 125, 55, 25);
-        fieldLoyalty.setBounds(225, 125, 130, 25);
-        labelFear.setBounds(360, 125, 45, 25);
-        fieldFear.setBounds(420, 125, 130, 25);
-        labelFood.setBounds(170, 160, 45, 25);
-        fieldFood.setBounds(225, 160, 130, 25);
-        labelRest.setBounds(360, 160, 45, 25);
-        fieldRest.setBounds(420, 160, 130, 25);
+        labelName.setBounds(170, 23, 45, 25);
+        fieldName.setBounds(225, 23, 130, 25);
+        labelId.setBounds(360, 23, 45, 25);
+        fieldId.setBounds(420, 23, 130, 25);
+        labelAge.setBounds(170, 50, 45, 25);
+        fieldAge.setBounds(225, 50, 130, 25);
+        labelSex.setBounds(360, 50, 45, 25);
+        fieldSex.setBounds(420, 50, 130, 25);
+        labelHealth.setBounds(170, 77, 45, 25);
+        fieldHealth.setBounds(225, 77, 130, 25);
+        labelHappiness.setBounds(360, 77, 55, 25);
+        fieldHappiness.setBounds(420, 77, 130, 25);
+        labelLoyalty.setBounds(170, 104, 55, 25);
+        fieldLoyalty.setBounds(225, 104, 130, 25);
+        labelFear.setBounds(360, 104, 45, 25);
+        fieldFear.setBounds(420, 104, 130, 25);
+        labelFood.setBounds(170, 131, 45, 25);
+        fieldFood.setBounds(225, 131, 130, 25);
+        labelRest.setBounds(360, 131, 45, 25);
+        fieldRest.setBounds(420, 131, 130, 25); //158
+        labelTrait1.setBounds(170, 158, 45, 25);
+        fieldTrait1.setBounds(225, 158, 130, 25);
+        labelTrait2.setBounds(360, 158, 45, 25);
+        fieldTrait2.setBounds(420, 158, 130, 25);
         labelWeapon.setBounds(170, 195, 55, 25);
         fieldWeapon.setBounds(225, 195, 325, 25);
         savePawn.setBounds(470, 365, 80, 25);
@@ -270,8 +283,10 @@ public class ColonistView {
         colonistBorder.setBounds(160, 20, 395, 375);
     }
     
-    private void setUpWeapons() {
+    private void setupComboBoxes() {
         fieldWeapon = new WebComboBox(app.getWeaponHandler().getWeaponNames());
+        fieldTrait1 = new WebComboBox(app.getTraits().getTraits());
+        fieldTrait2 = new WebComboBox(app.getTraits().getTraits());
     }
     
     public void updateCompnents(Pawn p) {
@@ -285,6 +300,8 @@ public class ColonistView {
         fieldFear.setText(Double.toString(p.getFear()));
         fieldFood.setText(Double.toString(p.getFood()));
         fieldRest.setText(Double.toString(p.getRest()));
+        fieldTrait1.setSelectedItem(p.getTrait1());
+        fieldTrait2.setSelectedItem(p.getTrait2());
         fieldWeapon.setSelectedItem(p.getCurrentWeapon().getGunName());
         
         constructionField.setValue(p.getSkillValue(Skill.CONSTRUCTION));
@@ -375,6 +392,14 @@ public class ColonistView {
     
     public String getRest() {
         return fieldRest.getText();
+    }
+    
+    public String getTrait1() {
+        return (String) fieldTrait1.getSelectedItem();
+    }
+    
+    public String getTrait2() {
+        return (String) fieldTrait2.getSelectedItem();
     }
     
     public String getWeapon() {
